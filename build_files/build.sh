@@ -14,8 +14,16 @@ dnf5 -y install ecryptfs-utils
 
 # this installs a packages from COPR repos
 dnf5 -y copr enable solopasha/hyprland
-dnf5 -y install hypridle hyprland hyprlock rofi-wayland seatd SwayNotificationCenter waybar swww mpvpaper cliphist
+dnf5 -y copr enable che/nerd-fonts
+dnf5 -y copr enable tofik/nwg-shell
+dnf5 -y copr enable erikreider/SwayNotificationCenter
+dnf5 -y copr enable errornointernet/quickshell
+dnf5 -y install hypridle hyprland hyprlock rofi-wayland seatd SwayNotificationCenter waybar swww mpvpaper cliphist quickshell nerd-fonts
 dnf5 -y copr disable solopasha/hyprland
+dnf5 -y copr disable che/nerd-fonts
+dnf5 -y copr disable tofik/nwg-shell
+dnf5 -y copr disable erikreider/SwayNotificationCenter
+dnf5 -y copr disable errornointernet/quickshell
 
 # install VirtualBox
 /ctx/virtualbox.sh
