@@ -17,6 +17,9 @@ dnf5 -y copr enable solopasha/hyprland
 dnf5 -y install hypridle hyprland hyprlock rofi-wayland seatd SwayNotificationCenter waybar swww mpvpaper cliphist
 dnf5 -y copr disable solopasha/hyprland
 
+# install VirtualBox
+/ctx/virtualbox.sh
+
 #### Example for enabling a System Unit File
 
 systemctl enable podman.socket
