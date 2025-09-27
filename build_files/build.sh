@@ -10,7 +10,7 @@ set -ouex pipefail
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/39/x86_64/repoview/index.html&protocol=https&redirect=1
 
 # this installs a packages from fedora repos
-dnf5 -y install ecryptfs-utils gparted
+dnf5 -y install ecryptfs-utils
 
 # this installs a packages from COPR repos
 dnf5 -y copr enable solopasha/hyprland
