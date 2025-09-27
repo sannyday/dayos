@@ -16,7 +16,7 @@ dnf5 -y copr enable erikreider/SwayNotificationCenter
 dnf5 -y copr enable errornointernet/quickshell
 dnf5 -y copr enable aquacash5/nerd-fonts
 
-readarray -t pkgs < <(cat /ctx/fonts /ctx/hypr)
+readarray -t pkgs < <(cat /ctx/fonts /ctx/hypr | grep -v \#)
 dnf5 -y install ${pkgs[*]}
 
 dnf5 -y copr disable solopasha/hyprland
