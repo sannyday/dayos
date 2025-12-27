@@ -109,7 +109,7 @@ import_gpg_key() {
     print_status "Importing VeraCrypt GPG public key..."
 
     # Import the key using rpm (as recommended on the website)
-    if ! sudo rpm --import "$VERACRYPT_KEY_URL"; then
+    if ! rpm --import "$VERACRYPT_KEY_URL"; then
         print_error "Failed to import GPG key using rpm, trying alternative method..."
 
         # Alternative: Download and import using gpg
