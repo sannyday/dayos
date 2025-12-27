@@ -26,7 +26,7 @@ dnf5 -y copr disable erikreider/SwayNotificationCenter
 dnf5 -y copr disable errornointernet/quickshell
 dnf5 -y copr disable aquacash5/nerd-fonts
 
-# install VirtualBox
+/ctx/veracrypt.sh
 /ctx/virtualbox.sh
 
 #### Example for enabling a System Unit File
