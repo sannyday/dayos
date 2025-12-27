@@ -16,8 +16,9 @@ dnf5 -y copr enable erikreider/SwayNotificationCenter
 dnf5 -y copr enable errornointernet/quickshell
 dnf5 -y copr enable aquacash5/nerd-fonts
 
+dnf5 -y --enablerepo=terra install mangowc
 readarray -t pkgs < <(cat /ctx/fonts /ctx/hypr | grep -v \#)
-dnf5 -y --enablerepo=terra install ${pkgs[*]}
+dnf5 -y install ${pkgs[*]}
 
 dnf5 -y copr disable sdegler/hyprland
 dnf5 -y copr disable tofik/nwg-shell
@@ -27,8 +28,6 @@ dnf5 -y copr disable aquacash5/nerd-fonts
 
 # install VirtualBox
 /ctx/virtualbox.sh
-# install Determinate Nix
-/ctx/nix.sh
 
 #### Example for enabling a System Unit File
 

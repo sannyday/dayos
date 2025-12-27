@@ -7,7 +7,7 @@ set -ouex pipefail
 RELEASE="$(rpm -E %fedora)"
 
 # search installed rpm packages for kernel to get version; `uname -r` does not work in a container environment
-KERNEL_VER="$(rpm -qa | grep -E 'kernel-[0-9].*?\.bazzite' | cut -d'-' -f2,3)"
+KERNEL_VER="$(rpm -qa | grep -E 'kernel-[0-9].*?[.\\-]ba' | cut -d'-' -f2,3)"
 # install dkms
 dnf install -y dkms
 # get latest version number of VirtualBox
@@ -71,3 +71,11 @@ curl -L -o $EXTPACK_PATH "$EXTPACK_URL"
   --name "Oracle VirtualBox Extension Pack" \
   --tarball $EXTPACK_PATH \
   --sha-256 $HASH
+
+mkdir -p /usr/lib/modules-load.d
+cat > /usr/lib/modules-load.d/bazzite-virtualbox.conf << EOF
+# load virtualbox kernel drivers
+vboxdrv
+vboxnetflt
+vboxnetflt
+EOF
