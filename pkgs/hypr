@@ -16,3 +16,5 @@ seatd
 swww
 SwayNotificationCenter
 waybar
+ecryptfs-utils
+gparted
