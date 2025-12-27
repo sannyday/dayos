@@ -95,15 +95,6 @@ set_download_urls() {
     print_status "Using RPM package: $RPM_PACKAGE"
 }
 
-# Check if running as root
-check_root() {
-    if [[ $EUID -eq 0 ]]; then
-        print_warning "Running as root. Installation will proceed with elevated privileges."
-    else
-        print_warning "Not running as root. Some operations may require sudo."
-    fi
-}
-
 # Import VeraCrypt GPG public key
 import_gpg_key() {
     print_status "Importing VeraCrypt GPG public key..."
@@ -120,7 +111,7 @@ import_gpg_key() {
             print_status "GPG key imported via gpg (alternative method)"
         else
             print_error "Failed to import GPG key. Please check your internet connection."
-            print_error "You can manually import the key with: sudo rpm --import $VERACRYPT_KEY_URL"
+            print_error "You can manually import the key with: rpm --import $VERACRYPT_KEY_URL"
             exit 1
         fi
     else
@@ -203,22 +194,22 @@ install_veracrypt() {
     print_status "Checking dependencies..."
     if ! rpm -q fuse fuse-libs &> /dev/null; then
         print_status "Installing required fuse packages..."
-        sudo dnf install -y fuse fuse-libs
+        dnf5 install -y fuse fuse-libs
     fi
 
     # Check for wxWidgets dependency (required for GUI)
     if ! rpm -q wxGTK3 &> /dev/null; then
         print_status "Installing wxGTK3 for GUI support..."
-        sudo dnf install -y wxGTK3
+        dnf5 install -y wxGTK3
     fi
 
     # Install the RPM
-    if sudo rpm -ivh "$RPM_PACKAGE"; then
+    if rpm -ivh "$RPM_PACKAGE"; then
         print_status "✓ VeraCrypt installed successfully"
     else
         # Try upgrading if already installed
         print_status "Attempting upgrade..."
-        if sudo rpm -Uvh "$RPM_PACKAGE"; then
+        if rpm -Uvh "$RPM_PACKAGE"; then
             print_status "✓ VeraCrypt upgraded successfully"
         else
             print_error "Failed to install/upgrade VeraCrypt"
@@ -269,8 +260,6 @@ main() {
 
     # Set download URLs based on detected version
     set_download_urls
-
-    check_root
 
     # Create temporary directory for downloads
     WORK_DIR=$(mktemp -d)
