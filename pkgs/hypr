@@ -2,15 +2,14 @@ cliphist
 hypridle
 hyprland
 hyprland-contrib
-hyprland-plugin-hyprexpo
-hyprland-plugin-hyprscrolling
-hyprland-plugins
+#hyprland-plugin-hyprexpo
+#hyprland-plugin-hyprscrolling
+#hyprland-plugins
 hyprland-guiutils
 hyprlock
 kitty
 mpvpaper
 network-manager-applet
-quickshell
 rofi-wayland
 seatd
 swww
@@ -18,3 +17,5 @@ SwayNotificationCenter
 waybar
 ecryptfs-utils
 gparted
+dms
+dms-greeter
