@@ -79,8 +79,8 @@ detect_latest_version() {
 
 # Construct download URLs based on detected version
 set_download_urls() {
-    # Base URL for SourceForge (where VeraCrypt binaries are hosted)
-    BASE_URL="https://sourceforge.net/projects/veracrypt/files/VeraCrypt%20$VERSION/Linux"
+    # Base URL for Launchpad (where VeraCrypt binaries are hosted)
+    BASE_URL="https://launchpad.net/veracrypt/trunk/${VERSION}/+download"
 
     # RPM package naming pattern (may need adjustment for different Fedora versions)
     # Note: VeraCrypt uses CentOS packages for Fedora compatibility
@@ -131,9 +131,9 @@ download_files() {
         print_status "Trying package name: $pkg"
 
         # Download RPM
-        if wget -q --show-progress "${BASE_URL}/${pkg}/download" -O "$pkg"; then
+        if wget -q --show-progress "${BASE_URL}/${pkg}" -O "$pkg"; then
             # Download signature
-            if wget -q --show-progress "${BASE_URL}/${pkg}.sig/download" -O "${pkg}.sig"; then
+            if wget -q --show-progress "${BASE_URL}/${pkg}.sig" -O "${pkg}.sig"; then
                 package_to_use="$pkg"
                 SIG_FILE="${pkg}.sig"
                 download_success=true
@@ -147,7 +147,6 @@ download_files() {
 
     if [[ "$download_success" = false ]]; then
         print_error "Failed to download RPM package with any naming pattern."
-        print_error "Available packages may be listed at: https://sourceforge.net/projects/veracrypt/files/"
         print_error "You may need to manually check the correct package name for your Fedora version."
         exit 1
     fi
