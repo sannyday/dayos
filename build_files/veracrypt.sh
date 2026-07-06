@@ -84,7 +84,7 @@ set_download_urls() {
 
     # RPM package naming pattern (may need adjustment for different Fedora versions)
     # Note: VeraCrypt uses CentOS packages for Fedora compatibility
-    RPM_PACKAGE="veracrypt-${VERSION}-Fedora-40-${ARCH}.rpm"
+    RPM_PACKAGE="veracrypt-${VERSION}-Fedora-44-${ARCH}.rpm"
     
     # Alternative package names to try (VeraCrypt has used different naming schemes)
     RPM_PACKAGE_ALT1="veracrypt-${VERSION}-centos-8-${ARCH}.rpm"
