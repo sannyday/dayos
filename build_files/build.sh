@@ -8,7 +8,7 @@ set -ouex pipefail
 # RPMfusion repos are available by default in ublue main images
 # List of rpmfusion packages can be found here:
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/39/x86_64/repoview/index.html&protocol=https&redirect=1
-dnf5 -y --enablerepo=terra install mangowc ghostty noctalia-shell
+dnf5 -y --enablerepo=terra install mangowc ghostty
 
 # this installs a packages from COPR repos
 dnf5 -y copr enable sdegler/hyprland
