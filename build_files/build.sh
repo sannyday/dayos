@@ -16,6 +16,10 @@ dnf5 -y copr enable tofik/nwg-shell
 dnf5 -y copr enable erikreider/SwayNotificationCenter
 dnf5 -y copr enable aquacash5/nerd-fonts
 dnf5 -y copr enable avengemedia/dms-git
+dnf5 -y copr enable theblackdon/dcli-bootc
+dnf install -y dcli-bootc proxychains-ng
+
+dnf remove -y terra-xorg-x11-server-Xwayland
 
 readarray -t pkgs < <(cat /ctx/fonts /ctx/hypr | grep -v \#)
 dnf5 -y install ${pkgs[*]}
