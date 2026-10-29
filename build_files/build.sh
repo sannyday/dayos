@@ -29,8 +29,8 @@ dnf5 -y copr disable tofik/nwg-shell
 dnf5 -y copr disable erikreider/SwayNotificationCenter
 dnf5 -y copr disable aquacash5/nerd-fonts
 
-/ctx/veracrypt.sh
-/ctx/virtualbox.sh
+#/ctx/veracrypt.sh
+#/ctx/virtualbox.sh
 
 #### Example for enabling a System Unit File
 
