@@ -78,5 +78,4 @@ cat > /usr/lib/modules-load.d/bazzite-virtualbox.conf << EOF
 # load virtualbox kernel drivers
 vboxdrv
 vboxnetflt
-vboxnetflt
 EOF
