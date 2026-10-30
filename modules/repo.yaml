@@ -1,0 +1,10 @@
+description: Enable Repos
+repos:
+  enable:
+  - terra
+  - terra-extras
+remote_rpms:
+  - name: rpmfusion-free
+    url: https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+  - name: rpmfusion-nonfree
+    url: https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm

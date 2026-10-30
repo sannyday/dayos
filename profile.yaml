@@ -1,0 +1,10 @@
+name: dayos
+base_image: ghcr.io/ublue-os/bazzite-nvidia:stable
+default_tag: latest
+enabled_modules:
+- base
+- font
+- sys
+package_manager: dnf
+dotfiles: []
+overlay_backend: auto

@@ -2,3 +2,7 @@ cosign.key
 _build_*
 output
 _build-*/**
+*.rpm
+*.AppImage
+*.appimage
+build_files/project/

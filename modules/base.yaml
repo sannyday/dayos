@@ -1,0 +1,45 @@
+description: Base system packages
+packages:
+- dcli-bootc
+- mangowm
+- ghostty
+- cliphist
+- hypridle
+- hyprland
+#- hyprland-contrib
+#- hyprland-guiutils
+- hyprlock
+#- hyprpolkitagent
+- xdg-desktop-portal-hyprland
+#- kitty
+#- mpvpaper
+#- network-manager-applet
+- noctalia
+- rofi-wayland
+- seatd
+#- swww
+#- SwayNotificationCenter
+#- waybar
+- ecryptfs-utils
+- gparted
+#- dms
+#- dms-greeter
+- proxychains-ng
+#- ayugram-desktop
+- veracrypt
+- lgl-vm-curator
+#- akmod-VirtualBox
+#- dkms
+#- VirtualBox
+repos:
+  copr:
+  - theblackdon/dcli-bootc
+#  - sdegler/hyprland
+  - ashbuk/Hyprland-Fedora
+#  - tofik/nwg-shell
+#  - erikreider/SwayNotificationCenter
+#  - avengemedia/dms-git
+  - bigjapka/VeraCrypt
+  - linuxgamerlife/lgl-vm-curator
+  - scottames/ghostty
+  - kaleedtc/mangowm

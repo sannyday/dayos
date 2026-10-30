@@ -1,31 +1,27 @@
-# Allow build scripts to be referenced without being copied into the final image
+# UBlue : https://github.com/orgs/ublue-os/packages
+# Fedora: https://quay.io/fedora/fedora-bootc
+# CentOS: https://quay.io/centos-bootc/centos-bootc
+ARG BASE_IMAGE=ghcr.io/ublue-os/bazzite-nvidia:stable
+
 FROM scratch AS ctx
 COPY build_files /
-COPY pkgs /
+COPY files /files
 
-# Base Image
-FROM ghcr.io/ublue-os/bazzite-nvidia:stable
+FROM ${BASE_IMAGE}
 
-## Other possible base images include:
-# FROM ghcr.io/ublue-os/bazzite:latest
-# FROM ghcr.io/ublue-os/bluefin-nvidia:stable
-# 
-# ... and so on, here are more base images
-# Universal Blue Images: https://github.com/orgs/ublue-os/packages
-# Fedora base image: quay.io/fedora/fedora-bootc:41
-# CentOS base images: quay.io/centos-bootc/centos-bootc:stream10
-
-### MODIFICATIONS
-## make modifications desired in your image and install packages by modifying the build.sh script
-## the following RUN directive does all the things required to run "build.sh" as recommended.
+# Cache-bust: dcli-bootc passes a content hash of build_files/ and files/ as
+# DCLI_BUILD_HASH. Bind-mounted content is not part of podman's layer cache
+# key, so without this the customization layer could be silently reused even
+# after the build inputs change.
+ARG DCLI_BUILD_HASH=dev
 
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
+    /bin/sh -c 'echo "dcli-bootc build inputs: ${DCLI_BUILD_HASH}" > /tmp/.build-hash' && \
     /ctx/build.sh && \
     ostree container commit
-    
-### LINTING
-## Verify final image and contents are correct.
+
+# Verify final image and contents are correct.
 RUN bootc container lint
