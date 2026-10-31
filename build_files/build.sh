@@ -5,6 +5,11 @@ set -euo pipefail
 # Profile: dayos
 
 
+# === file: System files ===
+
+# Copy files/ tree into image
+rsync -rlptD /ctx/files/ /
+
 # === base: Base system packages ===
 dnf5 -y copr enable theblackdon/dcli-bootc
 dnf5 -y copr enable ashbuk/Hyprland-Fedora

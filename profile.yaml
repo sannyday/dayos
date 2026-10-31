@@ -2,6 +2,7 @@ name: dayos
 base_image: ghcr.io/ublue-os/bazzite-nvidia:stable
 default_tag: latest
 enabled_modules:
+- file
 - base
 - font
 - sys
