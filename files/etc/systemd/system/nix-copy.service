@@ -1,0 +1,14 @@
+[Unit]
+Description=One-time copy of /nix to /var/home/nix
+After=local-fs.target
+ConditionPathExists=/nix
+ConditionPathExists=!/var/home/nix
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/cp -a /nix /var/home/nix
+ExecStartPost=/bin/systemctl disable nix-copy.service
+
+[Install]
+WantedBy=multi-user.target

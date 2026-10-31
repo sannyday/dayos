@@ -2,5 +2,3 @@ description: System settings
 services:
 - bootc-fetch-apply-updates.timer
 - podman.socket
-scripts:
-  post: mkdir -p /nix

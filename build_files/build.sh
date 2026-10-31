@@ -36,6 +36,16 @@ dnf install -y \
     veracrypt \
     lgl-vm-curator
 
+# === nix: Nix package manager ===
+
+dnf install -y \
+    nix \
+    nix-daemon \
+    busybox
+systemctl enable --force nix-copy
+systemctl enable --force nix.mount
+systemctl enable --force nix-daemon
+
 # === font: Nerd fonts ===
 dnf5 -y copr enable aquacash5/nerd-fonts
 
@@ -54,9 +64,6 @@ dnf install -y \
     zed-mono-nerd-fonts
 
 # === sys: System settings ===
-
-# post script (sys)
-mkdir -p /nix
 systemctl enable --force bootc-fetch-apply-updates.timer
 systemctl enable --force podman.socket
 

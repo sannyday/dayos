@@ -4,6 +4,7 @@ default_tag: latest
 enabled_modules:
 - file
 - base
+- nix
 - font
 - sys
 package_manager: dnf

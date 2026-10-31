@@ -1,0 +1,9 @@
+description: Nix package manager
+packages:
+- nix
+- nix-daemon
+- busybox
+services:
+- nix-copy
+- nix.mount
+- nix-daemon

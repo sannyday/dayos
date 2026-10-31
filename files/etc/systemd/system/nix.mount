@@ -1,0 +1,17 @@
+[Unit]
+Description=Bind mount /var/home/nix over /nix
+After=nix-copy.service
+Requires=nix-copy.service
+PropagatesStopTo=nix-daemon.service
+Before=nix-daemon.service
+
+[Mount]
+What=/var/home/nix
+Where=/nix
+Type=none
+DirectoryMode=0755
+Options=bind
+
+[Install]
+RequiredBy=nix-daemon.service
+RequiredBy=nix-daemon.socket
