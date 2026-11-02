@@ -9,3 +9,5 @@ packages:
 repos:
   copr:
   - lionheartp/Hyprland
+services:
+- --global hyprpolkitagent.service

@@ -38,6 +38,7 @@ dnf install -y \
     hyprpolkitagent \
     uwsm \
     xdg-desktop-portal-hyprland
+systemctl enable --force --global hyprpolkitagent.service
 
 # === nix: Nix package manager ===
 
