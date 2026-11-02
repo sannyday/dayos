@@ -17,6 +17,7 @@ packages:
 - noctalia
 - rofi-wayland
 - seatd
+- uwsm
 #- swww
 #- SwayNotificationCenter
 #- waybar
@@ -43,3 +44,4 @@ repos:
   - linuxgamerlife/lgl-vm-curator
   - scottames/ghostty
   - kaleedtc/mangowm
+  - mradityaalok/satori

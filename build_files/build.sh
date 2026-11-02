@@ -17,6 +17,7 @@ dnf5 -y copr enable bigjapka/VeraCrypt
 dnf5 -y copr enable linuxgamerlife/lgl-vm-curator
 dnf5 -y copr enable scottames/ghostty
 dnf5 -y copr enable kaleedtc/mangowm
+dnf5 -y copr enable mradityaalok/satori
 
 dnf install -y \
     dcli-bootc \
@@ -30,6 +31,7 @@ dnf install -y \
     noctalia \
     rofi-wayland \
     seatd \
+    uwsm \
     ecryptfs-utils \
     gparted \
     proxychains-ng \
