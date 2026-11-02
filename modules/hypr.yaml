@@ -1,5 +1,7 @@
 description: Hyprland packages
 packages:
+- --best
+- --allowerasing
 - hyprland
 - hyprpolkitagent
 - uwsm

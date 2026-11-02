@@ -31,7 +31,9 @@ dnf install -y \
 # === hypr: Hyprland packages ===
 dnf5 -y copr enable lionheartp/Hyprland
 
-dnf install -y --best --allowerasing \
+dnf install -y \
+    --best \
+    --allowerasing \
     hyprland \
     hyprpolkitagent \
     uwsm \
