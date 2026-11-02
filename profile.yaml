@@ -4,6 +4,7 @@ default_tag: latest
 enabled_modules:
 - file
 - base
+- hypr
 - nix
 - font
 - sys

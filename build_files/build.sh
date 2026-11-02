@@ -11,32 +11,31 @@ set -euo pipefail
 rsync -rlptD /ctx/files/ /
 
 # === base: Base system packages ===
-dnf5 -y copr enable theblackdon/dcli-bootc
-dnf5 -y copr enable ashbuk/Hyprland-Fedora
 dnf5 -y copr enable bigjapka/VeraCrypt
 dnf5 -y copr enable linuxgamerlife/lgl-vm-curator
 dnf5 -y copr enable scottames/ghostty
-dnf5 -y copr enable kaleedtc/mangowm
-dnf5 -y copr enable mradityaalok/satori
+dnf5 -y copr enable theblackdon/dcli-bootc
 
 dnf install -y \
-    dcli-bootc \
-    mangowm \
-    ghostty \
     cliphist \
-    hypridle \
-    hyprland \
-    hyprlock \
-    xdg-desktop-portal-hyprland \
-    noctalia \
-    rofi-wayland \
-    seatd \
-    uwsm \
+    dcli-bootc \
     ecryptfs-utils \
+    fuzzel \
+    ghostty \
     gparted \
+    lgl-vm-curator \
+    noctalia \
     proxychains-ng \
-    veracrypt \
-    lgl-vm-curator
+    veracrypt
+
+# === hypr: Hyprland packages ===
+dnf5 -y copr enable lionheartp/Hyprland
+
+dnf install -y --best --allowerasing \
+    hyprland \
+    hyprpolkitagent \
+    uwsm \
+    xdg-desktop-portal-hyprland
 
 # === nix: Nix package manager ===
 

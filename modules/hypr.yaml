@@ -1,0 +1,9 @@
+description: Hyprland packages
+packages:
+- hyprland
+- hyprpolkitagent
+- uwsm
+- xdg-desktop-portal-hyprland
+repos:
+  copr:
+  - lionheartp/Hyprland
