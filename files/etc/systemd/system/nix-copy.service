@@ -1,8 +1,13 @@
 [Unit]
 Description=One-time copy of /nix to /var/home/nix
-After=local-fs.target
 ConditionPathExists=/nix
 ConditionPathExists=!/var/home/nix
+DefaultDependencies=no
+After=systemd-remount-fs.service var-home.mount
+Requires=var-home.mount
+Before=local-fs.target nix.mount
+Conflicts=shutdown.target
+Before=shutdown.target
 
 [Service]
 Type=oneshot
@@ -11,4 +16,4 @@ ExecStart=/bin/cp -a /nix /var/home/nix
 ExecStartPost=/bin/systemctl disable nix-copy.service
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=local-fs.target
