@@ -1,0 +1,14 @@
+[Unit]
+Description=Create Nix daemon socket dir and nix-users group
+After=local-fs.target
+Before=nix-daemon.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/mkdir -p /nix/var/nix/daemon-socket
+ExecStart=/bin/sh -c 'getent group nix-users >/dev/null || groupadd -r nix-users'
+ExecStart=/bin/sh -c 'u=$(getent passwd 1000 | cut -d: -f1); [ -n "$u" ] && ! id -nG "$u" | grep -qw nix-users && usermod -aG nix-users "$u"; exit 0'
+
+[Install]
+WantedBy=multi-user.target

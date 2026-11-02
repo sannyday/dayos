@@ -45,7 +45,8 @@ dnf install -y \
     busybox
 systemctl enable --force nix-copy
 systemctl enable --force nix.mount
-systemctl enable --force nix-daemon
+systemctl enable --force nix-group.service
+systemctl enable --force nix-daemon.service
 
 # === font: Nerd fonts ===
 dnf5 -y copr enable aquacash5/nerd-fonts
@@ -66,7 +67,9 @@ dnf install -y \
 
 # === sys: System settings ===
 systemctl enable --force bootc-fetch-apply-updates.timer
+systemctl enable --force rpm-ostreed-automatic.timer
 systemctl enable --force podman.socket
+systemctl enable --force flatpak-relocate.service
 
 # === cleanup ===
 dnf clean all && rm -rf /var/cache/dnf/*

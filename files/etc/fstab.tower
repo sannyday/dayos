@@ -1,0 +1,9 @@
+#
+# After editing this file, run 'systemctl daemon-reload' to update systemd
+#
+
+UUID=f8d9053c-13b9-4222-b4f2-cc4676b4d0be /          btrfs   subvol=@,noatime,lazytime,commit=120,discard=async,compress-force=zstd:1,space_cache=v2,ro 0 0
+UUID=8cab292f-d237-467b-a98b-a4e848d3822c /boot      ext4    defaults 1 2
+UUID=0647-DBCC                            /boot/efi  vfat    defaults,dmask=0022,fmask=0033 0 2
+UUID=f8d9053c-13b9-4222-b4f2-cc4676b4d0be /var       btrfs   subvol=@var,noatime,lazytime,commit=120,discard=async,compress-force=zstd:1,space_cache=v2 0 0
+UUID=676031a9-3d49-4d57-b8d9-226db6fdb719 /var/home  btrfs   subvol=@home,noatime,lazytime,commit=120,discard=async,compress-force=zstd:1,space_cache=v2 0 0

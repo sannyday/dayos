@@ -1,3 +1,4 @@
 description: System files
 files:
   - etc
+  - usr

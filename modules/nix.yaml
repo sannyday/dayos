@@ -6,4 +6,5 @@ packages:
 services:
 - nix-copy
 - nix.mount
-- nix-daemon
+- nix-group.service
+- nix-daemon.service

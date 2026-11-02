@@ -1,0 +1,16 @@
+[Unit]
+Description=Relocate /var/lib/flatpak to /home/flatpak symlink
+ConditionPathExists=/home/flatpak
+ConditionPathIsDirectory=/var/lib/flatpak
+After=local-fs.target
+Before=flatpak-system-helper.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/mv /var/lib/flatpak /var/lib/flatpak_del
+ExecStart=/bin/ln -s /home/flatpak /var/lib/flatpak
+ExecStart=/bin/sh -c '[ -L /var/lib/flatpak ] && [ "$(readlink -f /var/lib/flatpak)" = "/home/flatpak" ] && rm -rf /var/lib/flatpak_del'
+
+[Install]
+WantedBy=multi-user.target
