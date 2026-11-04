@@ -1,6 +1,5 @@
 description: System settings
 services:
-- bootc-fetch-apply-updates.timer
 - rpm-ostreed-automatic.timer
 - podman.socket
 - flatpak-relocate.service

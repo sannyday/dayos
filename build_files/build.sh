@@ -69,7 +69,6 @@ dnf install -y \
     zed-mono-nerd-fonts
 
 # === sys: System settings ===
-systemctl enable --force bootc-fetch-apply-updates.timer
 systemctl enable --force rpm-ostreed-automatic.timer
 systemctl enable --force podman.socket
 systemctl enable --force flatpak-relocate.service
