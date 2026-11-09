@@ -20,8 +20,7 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
     /bin/sh -c 'echo "dcli-bootc build inputs: ${DCLI_BUILD_HASH}" > /tmp/.build-hash' && \
-    /ctx/build.sh && \
-    ostree container commit
+    /ctx/build.sh
 
 # Verify final image and contents are correct.
 RUN bootc container lint
