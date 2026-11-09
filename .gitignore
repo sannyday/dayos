@@ -1,8 +1,11 @@
 cosign.key
+cosign.private
+/Containerfile
+*.iso
+*.iso-CHECKSUM
 _build_*
-output
 _build-*/**
+output
 *.rpm
 *.AppImage
 *.appimage
-build_files/project/

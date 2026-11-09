@@ -1,5 +1,0 @@
-description: System settings
-services:
-- rpm-ostreed-automatic.timer
-- podman.socket
-- flatpak-relocate.service

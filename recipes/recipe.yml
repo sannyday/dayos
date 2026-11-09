@@ -1,0 +1,101 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
+# The image is published to ghcr.io/<GitHub user>/dayos
+name: dayos
+description: DayOS - Bazzite NVIDIA with Hyprland, Nix, Nerd Fonts, and personal system tweaks.
+
+# Universal Blue Bazzite with the NVIDIA stack, stable channel.
+base-image: ghcr.io/ublue-os/bazzite-nvidia
+image-version: stable
+
+# Modules run in order, top to bottom. The package modules mirror the four
+# package modules of the original build (base, hypr, nix, font) so each
+# transaction behaves the same way as before.
+modules:
+  # Copy files/system/* into the image root (/). This runs before package
+  # installation so that RPM %config(noreplace) files (e.g. /etc/nix/nix.conf)
+  # keep the versions shipped in this repository.
+  - type: files
+    files:
+      - source: system
+        destination: /
+
+  # Base system packages
+  - type: dnf
+    repos:
+      copr:
+        - bigjapka/VeraCrypt
+        - linuxgamerlife/lgl-vm-curator
+        - scottames/ghostty
+    install:
+      packages:
+        - cliphist
+        - ecryptfs-utils
+        - fuzzel
+        - ghostty
+        - gparted
+        - lgl-vm-curator
+        - noctalia
+        - proxychains-ng
+        - veracrypt
+
+  # Hyprland replaces some packages from the base image, so it keeps its own
+  # transaction with --allowerasing (allow-erasing), as in the original build.
+  - type: dnf
+    repos:
+      copr:
+        - lionheartp/Hyprland
+    install:
+      allow-erasing: true
+      packages:
+        - hyprland
+        - hyprpolkitagent
+        - uwsm
+        - xdg-desktop-portal-hyprland
+
+  # Nix package manager
+  - type: dnf
+    install:
+      packages:
+        - nix
+        - nix-daemon
+        - busybox
+
+  # Nerd fonts
+  - type: dnf
+    repos:
+      copr:
+        - aquacash5/nerd-fonts
+    install:
+      packages:
+        - 0x-proto-nerd-fonts
+        - droid-sans-mono-nerd-fonts
+        - fira-code-nerd-fonts
+        - fira-mono-nerd-fonts
+        - jet-brains-mono-nerd-fonts
+        - nerd-fonts-symbols-only
+        - terminus-nerd-fonts
+        - ubuntu-mono-nerd-fonts
+        - ubuntu-nerd-fonts
+        - ubuntu-sans-nerd-fonts
+        - victor-mono-nerd-fonts
+        - zed-mono-nerd-fonts
+
+  # Units in files/systemd/system/ are copied to /usr/lib/systemd/system and
+  # enabled/disabled at build time.
+  - type: systemd
+    system:
+      enabled:
+        - nix-copy.service
+        - nix.mount
+        - nix-group.service
+        - nix-daemon.service
+        - rpm-ostreed-automatic.timer
+        - podman.socket
+        - flatpak-relocate.service
+    user:
+      enabled:
+        - hyprpolkitagent.service
+
+  # Installs the cosign policy files so signed image updates verify correctly.
+  - type: signing
