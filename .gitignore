@@ -9,3 +9,4 @@ output
 *.rpm
 *.AppImage
 *.appimage
+/.bluebuild-scripts_*

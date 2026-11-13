@@ -25,7 +25,7 @@ modules:
     repos:
       copr:
         - bigjapka/VeraCrypt
-        - linuxgamerlife/lgl-vm-curator
+        - linuxgamerlife/lgl-essentials
         - scottames/ghostty
     install:
       packages:
