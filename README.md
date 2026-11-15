@@ -13,8 +13,11 @@ else in the repository is input for the BlueBuild modules.
 ## What's included
 
 - **Hyprland** with UWSM, `hyprpolkitagent`, and `xdg-desktop-portal-hyprland`
-- **Nix** with the daemon enabled and `/nix` bind-mounted from `/var/home/nix`
+- **Nix** with the daemon enabled and `/nix` bind-mounted from `/var/home/nix`;
+  Nix trust is aligned with the UID 1000 account at boot
 - **Nerd Fonts** from the `aquacash5/nerd-fonts` COPR
+- **Default Flatpaks** from Flathub, installed by a boot-time timer rather
+  than baked into the image
 - Desktop tools: Ghostty, Fuzzel, cliphist, Noctalia, GParted, VeraCrypt,
   ecryptfs, proxychains-ng, and the `lgl-vm-curator` helper
 - **System configuration** from [`files/system/`](files/system):
@@ -22,7 +25,22 @@ else in the repository is input for the BlueBuild modules.
   podman socket, autologin into the UWSM-managed Hyprland session, and
   relocation of Flatpak data to `/var/home/flatpak`
 - **systemd units** from [`files/systemd/system/`](files/systemd/system) for the
-  Nix mount/copy/group setup and the Flatpak relocation service
+  Nix mount/copy/group setup, UID 1000 user configuration, and Flatpak
+  relocation service
+
+## Flatpaks
+
+The Flatpaks in the `default-flatpaks` module of
+[`recipes/recipe.yml`](recipes/recipe.yml) are **not baked into the image**.
+A systemd timer (`system-flatpak-setup.timer`) runs about 30 seconds after
+boot and installs anything missing from Flathub, similar to Bazzite's default
+apps. The list currently mirrors the system Flatpaks installed on this
+machine; edit the `install:` list to change it.
+
+Notifications are disabled (`notify: false`); set it to `true` if you want a
+desktop notification when the setup runs. On a running system,
+`bluebuild-flatpak-manager` can show the configuration and disable or
+re-enable the automatic setup.
 
 ## Installation
 
@@ -119,8 +137,12 @@ cosign.pub                # public key for image verification
 - `files/system/etc/fstab.tower` and `files/system/etc/crypttab.tower` are
   reference copies for the `tower` machine and are **not** applied because of
   the `.tower` suffix. Rename them if you want them to take effect.
-- `files/system/etc/plasmalogin.conf` autologins the local user `day`; change
-  the user name there if your account differs.
+- `files/system/etc/plasmalogin.conf` and `files/system/etc/nix/nix.conf`
+  keep the original `day` values. At boot, `dayos-user-config.service` checks
+  whether `day` exists with UID 1000: if it does, nothing changes; otherwise it
+  replaces `day` in both files with the account that owns UID 1000. If your
+  account uses a different UID, adjust it in
+  [`apply-user-config.sh`](files/system/usr/libexec/dayos/apply-user-config.sh).
 
 ## License
 

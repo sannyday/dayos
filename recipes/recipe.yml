@@ -81,6 +81,49 @@ modules:
         - victor-mono-nerd-fonts
         - zed-mono-nerd-fonts
 
+  # Flatpaks are installed from Flathub by a systemd timer after boot, so they
+  # are not stored in the image. This is the same "default apps" approach as
+  # Bazzite; the list is enforced on every boot.
+  - type: default-flatpaks
+    configurations:
+      - notify: false
+        scope: system
+        install:
+          - com.brave.Browser
+          - com.discordapp.Discord
+          - com.github.PintaProject.Pinta
+          - com.github.qarmin.czkawka
+          - com.google.Chrome
+          - com.nuclearplayer.Nuclear
+          - com.ranfdev.DistroShelf
+          - com.vivaldi.Vivaldi
+          - com.vscodium.codium
+          - io.freetubeapp.FreeTube
+          - io.github.flattool.Warehouse
+          - io.github.shiftey.Desktop
+          - io.gitlab.librewolf-community
+          - io.mpv.Mpv
+          - md.obsidian.Obsidian
+          - me.kozec.syncthingtk
+          - net.ankiweb.Anki
+          - net.mullvad.MullvadBrowser
+          - org.cryptomator.Cryptomator
+          - org.getmonero.Monero
+          - org.gnome.meld
+          - org.kde.gwenview
+          - org.kde.kcalc
+          - org.kde.kleopatra
+          - org.kde.ktorrent
+          - org.kde.okular
+          - org.keepassxc.KeePassXC
+          - org.libreoffice.LibreOffice
+          - org.mozilla.firefox
+          - org.torproject.torbrowser-launcher
+          - org.videolan.VLC
+          - org.wireshark.Wireshark
+          - ru.yandex.Browser
+          - us.zoom.Zoom
+
   # Units in files/systemd/system/ are copied to /usr/lib/systemd/system and
   # enabled/disabled at build time.
   - type: systemd
@@ -90,6 +133,7 @@ modules:
         - nix.mount
         - nix-group.service
         - nix-daemon.service
+        - dayos-user-config.service
         - rpm-ostreed-automatic.timer
         - podman.socket
         - flatpak-relocate.service
