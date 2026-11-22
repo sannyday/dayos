@@ -1,0 +1,13 @@
+[Unit]
+Description=Set up the DayOS VM test account
+After=local-fs.target systemd-sysusers.service
+Before=greetd.service nix-daemon.service
+ConditionPathExists=!/var/home/test/.dayos-vm-ready
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'groupadd -f test; id test >/dev/null 2>&1 || useradd -m -u 1000 -g test -G wheel -s /bin/bash test; usermod -aG wheel test; echo test:test | chpasswd; install -d -o test -g test /var/home/test; touch /var/home/test/.dayos-vm-ready; chown test:test /var/home/test/.dayos-vm-ready'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

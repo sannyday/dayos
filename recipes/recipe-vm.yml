@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
+# VM/test variant of DayOS.
+name: dayos-vm
+description: DayOS VM test variant on the non-NVIDIA Bazzite base.
+
+# The regular DayOS image uses bazzite-nvidia, which cannot work in a VM
+# without GPU passthrough. This variant uses the plain Bazzite base so the
+# virtio GPU works.
+base-image: ghcr.io/ublue-os/bazzite
+image-version: stable
+
+modules:
+  - from-file: common.yml
+
+  # VM-only test account files.
+  - type: files
+    files:
+      - source: vm
+        destination: /
+
+  # Enable the VM test-user service after its unit is copied.
+  - type: systemd
+    system:
+      enabled:
+        - dayos-vm-user.service

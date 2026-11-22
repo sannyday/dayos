@@ -4,15 +4,21 @@
 
 DayOS is a personal, custom [Bazzite](https://bazzite.gg) image built with
 [BlueBuild](https://blue-build.org). It starts from the Universal Blue
-`bazzite-nvidia` base and layers a Hyprland desktop, the Nix package manager,
-Nerd Fonts, and a handful of machine-specific system tweaks on top.
+`bazzite-nvidia` base, removes the KDE Plasma desktop/applications and Lutris,
+and layers Hyprland, labwc, the Nix package manager, Nerd Fonts, and a handful
+of machine-specific system tweaks on top.
 
-The build is defined in [`recipes/recipe.yml`](recipes/recipe.yml); everything
-else in the repository is input for the BlueBuild modules.
+The build is defined in [`recipes/recipe.yml`](recipes/recipe.yml); shared
+modules live in [`recipes/common.yml`](recipes/common.yml).
 
 ## What's included
 
 - **Hyprland** with UWSM, `hyprpolkitagent`, and `xdg-desktop-portal-hyprland`
+- **labwc**, a lightweight wlroots-based Wayland compositor
+- **KDE Plasma and Lutris removed** from the Bazzite base to reduce image
+  size; Flatpaks are left untouched
+- **greetd + tuigreet**, a lightweight login manager instead of KDE Plasma
+  Login/SDDM
 - **Nix** with the daemon enabled and `/nix` bind-mounted from `/var/home/nix`;
   Nix trust is aligned with the UID 1000 account at boot
 - **Nerd Fonts** from the `aquacash5/nerd-fonts` COPR
@@ -22,11 +28,10 @@ else in the repository is input for the BlueBuild modules.
   ecryptfs, proxychains-ng, and the `lgl-vm-curator` helper
 - **System configuration** from [`files/system/`](files/system):
   GRUB menu timeout, `rpm-ostreed` staging of automatic updates,
-  podman socket, autologin into the UWSM-managed Hyprland session, and
-  relocation of Flatpak data to `/var/home/flatpak`
+  podman socket, and relocation of Flatpak data to `/var/home/flatpak`
 - **systemd units** from [`files/systemd/system/`](files/systemd/system) for the
-  Nix mount/copy/group setup, UID 1000 user configuration, and Flatpak
-  relocation service
+  Nix mount/copy/group setup, UID 1000 user configuration, greetd, and the
+  Flatpak relocation service
 
 ## Flatpaks
 
@@ -34,8 +39,7 @@ The Flatpaks in the `default-flatpaks` module of
 [`recipes/recipe.yml`](recipes/recipe.yml) are **not baked into the image**.
 A systemd timer (`system-flatpak-setup.timer`) runs about 30 seconds after
 boot and installs anything missing from Flathub, similar to Bazzite's default
-apps. The list currently mirrors the system Flatpaks installed on this
-machine; edit the `install:` list to change it.
+apps.
 
 Notifications are disabled (`notify: false`); set it to `true` if you want a
 desktop notification when the setup runs. On a running system,
@@ -81,13 +85,13 @@ Install the [BlueBuild CLI](https://github.com/blue-build/cli#installation),
 then build the recipe with podman:
 
 ```bash
-bluebuild build recipes/recipe.yml
+bluebuild build --skip-validation recipes/recipe.yml
 ```
 
 Useful helpers are also available through `just`:
 
 ```bash
-just build       # bluebuild build
+just build       # bluebuild build --skip-validation
 just generate    # write the generated Containerfile to ./Containerfile
 just switch      # rebase this machine onto the locally built image
 just iso         # build an installer ISO from the published image
@@ -96,30 +100,46 @@ just iso         # build an installer ISO from the published image
 To inspect what BlueBuild generates without building:
 
 ```bash
-bluebuild generate recipes/recipe.yml -o Containerfile
+bluebuild generate --skip-validation recipes/recipe.yml -o Containerfile
 ```
 
-## ISO and disk images
+## VM test image
 
-BlueBuild can build an installer ISO directly from the published image:
+The main image uses the NVIDIA base and needs GPU passthrough in a VM. The
+`dayos-vm` variant uses the plain `bazzite` base:
 
 ```bash
-sudo bluebuild generate-iso --iso-name dayos.iso image ghcr.io/sannyday/dayos:latest
+just image-vm    # build localhost/dayos-vm:latest
+just qcow2-vm    # convert it to output-vm/*.qcow2
 ```
 
-The repository also keeps the `bootc-image-builder` based
-[`build-disk.yml`](.github/workflows/build-disk.yml) workflow, which produces
-`qcow2` and `anaconda-iso` images as job artifacts (or uploads them to S3 if
-the corresponding secrets are configured). The ISO kickstart in
-[`disk_config/iso.toml`](disk_config/iso.toml) hardcodes
-`ghcr.io/sannyday/dayos:latest`; update it if you fork the image under a
-different name.
+The VM recipe creates a `test` / `test` account in the `wheel` group on first
+boot, managed by `files/vm`. Change the password with `passwd` after logging
+in.
+
+The anaconda-iso path is not supported with the official CentOS-based BIB for
+this Fedora image, so use the qcow2 above.
+
+## Disk images
+
+The repository keeps the `bootc-image-builder` based
+[`build-disk.yml`](.github/workflows/build-disk.yml) workflow, which produces a
+`qcow2` image as a job artifact (or uploads it to S3 if the corresponding
+secrets are configured). It uses the official
+`quay.io/centos-bootc/bootc-image-builder:latest` builder.
+
+`just qcow2` builds a qcow2 from the published image; `just qcow2-vm` builds one
+from the locally built VM image.
 
 ## Repository layout
 
 ```text
-recipes/recipe.yml        # BlueBuild build definition
+recipes/recipe.yml        # main NVIDIA image definition
+recipes/recipe-vm.yml     # non-NVIDIA VM test variant
+recipes/common.yml        # shared modules imported by both recipes
 files/system/             # copied into the image root (/), e.g. /etc, /usr
+files/greetd/             # greetd/tuigreet login configuration
+files/vm/                 # VM-only files (test account and setup service)
 files/systemd/system/     # systemd units -> /usr/lib/systemd/system
 disk_config/              # bootc-image-builder configurations
 .github/workflows/        # image build (BlueBuild) + disk image build
@@ -128,8 +148,16 @@ cosign.pub                # public key for image verification
 
 ## Customization notes
 
-- Add or remove packages, COPR repositories, and units in
-  [`recipes/recipe.yml`](recipes/recipe.yml). Modules run top to bottom.
+- Shared modules live in [`recipes/common.yml`](recipes/common.yml); both
+  recipes import them with `from-file: common.yml`. Image-specific modules
+  stay in the recipe.
+- Add or remove shared packages, COPR repositories, and units in
+  [`recipes/common.yml`](recipes/common.yml). Modules run top to bottom.
+- KDE Plasma, its applications, and Lutris are removed declaratively with
+  `dnf.remove`; `systemd.masked` blocks the old display-manager alias.
+  Flatpaks are not touched.
+- The removal list was audited against a snapshot of the packages installed on
+  the running DayOS system; it is not used by the build.
 - Put configuration files under `files/system/` using the path they should
   have inside the image (for example `files/system/etc/default/grub`).
 - Put systemd units under `files/systemd/system/`; the `systemd` module copies
@@ -137,12 +165,12 @@ cosign.pub                # public key for image verification
 - `files/system/etc/fstab.tower` and `files/system/etc/crypttab.tower` are
   reference copies for the `tower` machine and are **not** applied because of
   the `.tower` suffix. Rename them if you want them to take effect.
-- `files/system/etc/plasmalogin.conf` and `files/system/etc/nix/nix.conf`
-  keep the original `day` values. At boot, `dayos-user-config.service` checks
-  whether `day` exists with UID 1000: if it does, nothing changes; otherwise it
-  replaces `day` in both files with the account that owns UID 1000. If your
-  account uses a different UID, adjust it in
+- `files/system/etc/nix/nix.conf` keeps `trusted-users = day`; at boot
+  `dayos-user-config.service` replaces it with the UID 1000 account name. If
+  your account uses a different UID, adjust it in
   [`apply-user-config.sh`](files/system/usr/libexec/dayos/apply-user-config.sh).
+- The image uses **greetd** with **tuigreet** as the login manager. Sessions are
+  read from `/usr/share/wayland-sessions` (Hyprland and labwc).
 
 ## License
 

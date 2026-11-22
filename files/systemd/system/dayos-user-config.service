@@ -1,7 +1,7 @@
 [Unit]
 Description=Align DayOS user settings with the UID 1000 account
 After=local-fs.target systemd-sysusers.service
-Before=display-manager.service plasmalogin.service nix-daemon.service
+Before=nix-daemon.service
 ConditionPathExists=/usr/libexec/dayos/apply-user-config.sh
 
 [Service]

@@ -39,6 +39,9 @@ jobs:
           registry_token: ${{ github.token }}
           pr_event_number: ${{ github.event.number }}
 
+          # The schema server is not always reachable from CI.
+          build_opts: --skip-validation
+
           # Enabled by default; disable if your image is small and you want
           # faster builds.
           maximize_build_space: true

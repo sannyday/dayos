@@ -6,6 +6,8 @@ cosign.private
 _build_*
 _build-*/**
 output
+output-vm
+work/
 *.rpm
 *.AppImage
 *.appimage

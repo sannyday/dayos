@@ -1,0 +1,313 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+modules:
+  # Copy files/system/* into the image root (/). This runs before package
+  # installation so that RPM %config(noreplace) files (e.g. /etc/nix/nix.conf)
+  # keep the versions shipped in this repository.
+  - type: files
+    files:
+      - source: system
+        destination: /
+
+  # Base system packages
+  - type: dnf
+    repos:
+      copr:
+        - bigjapka/VeraCrypt
+        - linuxgamerlife/lgl-essentials
+        - scottames/ghostty
+    install:
+      packages:
+        - cliphist
+        - ecryptfs-utils
+        - fuzzel
+        - ghostty
+        - gparted
+        - lgl-vm-curator
+        - noctalia
+        - proxychains-ng
+        - veracrypt
+
+  # Hyprland replaces some packages from the base image, so it keeps its own
+  # transaction with --allowerasing (allow-erasing).
+  - type: dnf
+    repos:
+      copr:
+        - lionheartp/Hyprland
+    install:
+      allow-erasing: true
+      packages:
+        - hyprland
+        - hyprpolkitagent
+        - uwsm
+        - xdg-desktop-portal-hyprland
+
+  # Lightweight Wayland compositor.
+  - type: dnf
+    install:
+      packages:
+        - labwc
+        - labwc-session
+
+  # Lightweight Wayland greeter (replaces KDE Plasma Login/SDDM).
+  - type: dnf
+    install:
+      packages:
+        - greetd
+        - greetd-selinux
+        - tuigreet
+
+  # Overwrite the package's greeter config after greetd is installed.
+  - type: files
+    files:
+      - source: greetd
+        destination: /
+
+  # Nix package manager
+  - type: dnf
+    install:
+      packages:
+        - nix
+        - nix-daemon
+        - busybox
+
+  # Nerd fonts
+  - type: dnf
+    repos:
+      copr:
+        - aquacash5/nerd-fonts
+    install:
+      packages:
+        - 0x-proto-nerd-fonts
+        - droid-sans-mono-nerd-fonts
+        - fira-code-nerd-fonts
+        - fira-mono-nerd-fonts
+        - jet-brains-mono-nerd-fonts
+        - nerd-fonts-symbols-only
+        - terminus-nerd-fonts
+        - ubuntu-mono-nerd-fonts
+        - ubuntu-nerd-fonts
+        - ubuntu-sans-nerd-fonts
+        - victor-mono-nerd-fonts
+        - zed-mono-nerd-fonts
+
+  # Remove KDE applications and Plasma first, while KF6 libraries remain
+  # available for their removal scriptlets.
+  - type: dnf
+    remove:
+      auto-remove: false
+      packages:
+        - ark
+        - ark-libs
+        - breeze-cursor-theme
+        - breeze-gtk-common
+        - breeze-gtk-gtk3
+        - breeze-gtk-gtk4
+        - breeze-icon-theme
+        - dolphin
+        - dolphin-libs
+        - dolphin-plugins
+        - kactivitymanagerd
+        - kate
+        - kate-krunner-plugin
+        - kate-libs
+        - kate-plugins
+        - kde-cli-tools
+        - kde-connect
+        - kde-connect-libs
+        - kde-gtk-config
+        - kde-inotify-survey
+        - kde-settings
+        - kde-settings-plasma
+        - kde-settings-plasmalogin
+        - kde-settings-pulseaudio
+        - kdebugsettings
+        - kdeconnectd
+        - kdecoration
+        - kdegraphics-mobipocket
+        - kdegraphics-thumbnailers
+        - kdenetwork-filesharing
+        - kdeplasma-addons
+        - kdesu
+        - kfind
+        - kglobalacceld
+        - khelpcenter
+        - kinfocenter
+        - kmenuedit
+        - konsole
+        - konsole-part
+        - krdc
+        - krdc-libs
+        - krdp
+        - krdp-libs
+        - krfb
+        - krfb-libs
+        - krunner-bazaar
+        - krunner-yafti
+        - kscreen
+        - kscreenlocker
+        - ksshaskpass
+        - ksystemstats
+        - kwalletmanager5
+        - kwin
+        - kwin-common
+        - kwin-libs
+        - kwrite
+        - kwrited
+        - lutris
+        - oxygen-cursor-themes
+        - oxygen-icon-theme
+        - oxygen-sounds
+        - plasma-activities
+        - plasma-activities-stats
+        - plasma-breeze
+        - plasma-breeze-common
+        - plasma-breeze-qt6
+        - plasma-browser-integration
+        - plasma-desktop
+        - plasma-desktop-doc
+        - plasma-disks
+        - plasma-foreground-booster-dmemcg
+        - plasma-integration
+        - plasma-keyboard
+        - plasma-login-manager
+        - plasma-lookandfeel-fedora
+        - plasma-milou
+        - plasma-nm
+        - plasma-nm-openconnect
+        - plasma-nm-openvpn
+        - plasma-oxygen
+        - plasma-oxygen-qt6
+        - plasma-pa
+        - plasma-print-manager
+        - plasma-print-manager-libs
+        - plasma-systemmonitor
+        - plasma-systemsettings
+        - plasma-thunderbolt
+        - plasma-union
+        - plasma-vault
+        - plasma-workspace
+        - plasma-workspace-common
+        - plasma-workspace-libs
+        - plasma-workspace-wallpapers
+        - plasma5support
+        - polkit-kde
+        - powerdevil
+        - rom-properties
+        - rom-properties-common
+        - rom-properties-kf6
+        - rom-properties-utils
+        - spectacle
+        - steamdeck-kde-presets-desktop
+        - xdg-desktop-portal-kde
+
+  # Then remove the KF6 libraries and filesystem packages; auto-remove
+  # cleans up dependencies that are no longer needed.
+  - type: dnf
+    remove:
+      auto-remove: true
+      packages:
+        - kde-filesystem
+        - kf6-attica
+        - kf6-baloo
+        - kf6-baloo-file
+        - kf6-baloo-libs
+        - kf6-bluez-qt
+        - kf6-breeze-icons
+        - kf6-filesystem
+        - kf6-frameworkintegration
+        - kf6-frameworkintegration-libs
+        - kf6-karchive
+        - kf6-kauth
+        - kf6-kbookmarks
+        - kf6-kcalendarcore
+        - kf6-kcmutils
+        - kf6-kcodecs
+        - kf6-kcolorscheme
+        - kf6-kcompletion
+        - kf6-kconfig
+        - kf6-kconfigwidgets
+        - kf6-kcontacts
+        - kf6-kcoreaddons
+        - kf6-kcrash
+        - kf6-kdbusaddons
+        - kf6-kdeclarative
+        - kf6-kded
+        - kf6-kdesu
+        - kf6-kdnssd
+        - kf6-kdoctools
+        - kf6-kfilemetadata
+        - kf6-kglobalaccel
+        - kf6-kguiaddons
+        - kf6-kholidays
+        - kf6-ki18n
+        - kf6-kiconthemes
+        - kf6-kidletime
+        - kf6-kidletime-x11
+        - kf6-kimageformats
+        - kf6-kio-core
+        - kf6-kio-core-libs
+        - kf6-kio-doc
+        - kf6-kio-file-widgets
+        - kf6-kio-gui
+        - kf6-kio-widgets
+        - kf6-kio-widgets-libs
+        - kf6-kirigami
+        - kf6-kirigami-addons
+        - kf6-kitemmodels
+        - kf6-kitemviews
+        - kf6-kjobwidgets
+        - kf6-knewstuff
+        - kf6-knotifications
+        - kf6-knotifyconfig
+        - kf6-kpackage
+        - kf6-kparts
+        - kf6-kpeople
+        - kf6-kpty
+        - kf6-kquickcharts
+        - kf6-krunner
+        - kf6-kservice
+        - kf6-kstatusnotifieritem
+        - kf6-ksvg
+        - kf6-ktexteditor
+        - kf6-ktexttemplate
+        - kf6-ktextwidgets
+        - kf6-kunitconversion
+        - kf6-kuserfeedback
+        - kf6-kwallet
+        - kf6-kwallet-libs
+        - kf6-kwidgetsaddons
+        - kf6-kwindowsystem
+        - kf6-kxmlgui
+        - kf6-modemmanager-qt
+        - kf6-networkmanager-qt
+        - kf6-prison
+        - kf6-purpose
+        - kf6-qqc2-desktop-style
+        - kf6-solid
+        - kf6-sonnet
+        - kf6-sonnet-hunspell
+        - kf6-syndication
+        - kf6-syntax-highlighting
+        - kpipewire
+        - kwayland
+
+  # Units in files/systemd/system/ are copied to /usr/lib/systemd/system and
+  # enabled/disabled at build time.
+  - type: systemd
+    system:
+      masked:
+        - display-manager.service
+      enabled:
+        - nix-copy.service
+        - nix.mount
+        - nix-group.service
+        - nix-daemon.service
+        - dayos-user-config.service
+        - greetd.service
+        - rpm-ostreed-automatic.timer
+        - podman.socket
+        - flatpak-relocate.service
+    user:
+      enabled:
+        - hyprpolkitagent.service
