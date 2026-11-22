@@ -319,3 +319,10 @@ modules:
     user:
       enabled:
         - hyprpolkitagent.service
+
+  # Kernel arguments for Intel IOMMU passthrough.
+  - type: kargs
+    arch: x86_64
+    kargs:
+      - intel_iommu=on
+      - iommu=pt
