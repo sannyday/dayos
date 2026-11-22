@@ -91,6 +91,14 @@ modules:
         - victor-mono-nerd-fonts
         - zed-mono-nerd-fonts
 
+  # Skip RPM scriptlets for the KDE/Lutris removal transaction. This
+  # drop-in is removed by systemd-tmpfiles on first boot, so dnf is
+  # not permanently affected.
+  - type: files
+    files:
+      - source: noscripts
+        destination: /
+
   # Remove KDE applications and Plasma first, while KF6 libraries remain
   # available for their removal scriptlets.
   - type: dnf
