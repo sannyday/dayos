@@ -300,6 +300,14 @@ modules:
         - kpipewire
         - kwayland
 
+  # Remove MangoHud and vkBasalt.
+  - type: dnf
+    remove:
+      auto-remove: true
+      packages:
+        - terra-mangohud
+        - vkBasalt
+
   # Units in files/systemd/system/ are copied to /usr/lib/systemd/system and
   # enabled/disabled at build time.
   - type: systemd
