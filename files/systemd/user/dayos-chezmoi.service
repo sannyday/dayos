@@ -1,0 +1,15 @@
+[Unit]
+Description=Apply DayOS dotfiles with chezmoi
+ConditionPathExists=%h/git/dotfiles/.git
+ConditionPathExists=%h/.secret/age/key.txt
+ConditionPathExists=!%S/dayos/chezmoi-applied
+
+[Service]
+Type=oneshot
+StateDirectory=dayos
+ExecStart=/usr/bin/chezmoi init --source %h/git/dotfiles --apply
+ExecStartPost=/usr/bin/touch %S/dayos/chezmoi-applied
+RemainAfterExit=yes
+
+[Install]
+WantedBy=default.target

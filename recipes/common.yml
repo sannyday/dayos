@@ -20,9 +20,11 @@ modules:
       packages:
         - cliphist
         - ecryptfs-utils
+        - age
         - fuzzel
         - ghostty
         - gparted
+        - jq
         - lgl-vm-curator
         - noctalia
         - proxychains-ng
@@ -325,6 +327,7 @@ modules:
     user:
       enabled:
         - hyprpolkitagent.service
+        - dayos-chezmoi.service
 
   # Kernel arguments for Intel IOMMU passthrough.
   - type: kargs
@@ -332,3 +335,10 @@ modules:
     kargs:
       - intel_iommu=on
       - iommu=pt
+
+  # Install chezmoi. The dayos-chezmoi user unit applies the existing
+  # ~/git/dotfiles source at first login once the age key is present.
+  - type: chezmoi
+    repository: "https://github.com/sannyday/dotfiles"
+    disable-init: true
+    disable-update: true
