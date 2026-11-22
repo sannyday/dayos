@@ -304,8 +304,6 @@ modules:
   # enabled/disabled at build time.
   - type: systemd
     system:
-      masked:
-        - display-manager.service
       enabled:
         - nix-copy.service
         - nix.mount
