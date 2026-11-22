@@ -27,6 +27,7 @@ modules:
         - jq
         - lgl-vm-curator
         - noctalia
+        - papirus-icon-theme
         - proxychains-ng
         - veracrypt
 
