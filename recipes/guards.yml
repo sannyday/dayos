@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
+# Build guards. Included at the end of both recipes.
+modules:
+  - type: script
+    snippets:
+      - |
+        set -euxo pipefail
+
+        # Custom binaries must live under /usr in atomic/bootc.
+        test -x /usr/bin/tuigreet
+
+        # The non-NVIDIA VM base has no NVIDIA stack and skips this.
+        if rpm -q nvidia-driver >/dev/null 2>&1 \
+          || rpm -q nvidia-driver-libs >/dev/null 2>&1 \
+          || [ -e /usr/lib64/libEGL_nvidia.so.0 ]; then
+          rpm -q nvidia-driver nvidia-driver-libs nvidia-kmod-common
+          test -e /usr/lib64/libEGL_nvidia.so.0
+        fi

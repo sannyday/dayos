@@ -78,9 +78,5 @@ modules:
         - libnvidia-container1
         - libnvidia-container-tools
 
-  - type: script
-    snippets:
-      - |
-        set -euxo pipefail
-        rpm -q nvidia-driver nvidia-driver-libs nvidia-kmod-common
-        test -e /usr/lib64/libEGL_nvidia.so.0
+
+  - from-file: guards.yml

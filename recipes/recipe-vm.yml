@@ -24,3 +24,5 @@ modules:
     system:
       enabled:
         - dayos-vm-user.service
+
+  - from-file: guards.yml
