@@ -12,6 +12,12 @@ image-version: stable
 modules:
   - from-file: common.yml
 
+  # Autologin into Hyprland/UWSM on the main image.
+  - type: files
+    files:
+      - source: greetd-autologin
+        destination: /
+
   # Flatpaks are installed from Flathub by a systemd timer after boot, so they
   # are not stored in the image. This is the same "default apps" approach as
   # Bazzite; the list is enforced on every boot.
