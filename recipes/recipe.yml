@@ -17,6 +17,8 @@ modules:
     files:
       - source: greetd-autologin
         destination: /
+      - source: greetd-autologin
+        destination: /
 
   # Flatpaks are installed from Flathub by a systemd timer after boot, so they
   # are not stored in the image. This is the same "default apps" approach as

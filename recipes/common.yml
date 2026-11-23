@@ -8,6 +8,8 @@ modules:
     files:
       - source: system
         destination: /
+      - source: system
+        destination: /
 
   # Base system packages
   - type: dnf
@@ -71,6 +73,8 @@ modules:
     files:
       - source: greetd
         destination: /
+      - source: greetd
+        destination: /
 
   # tuigreet 0.11 is source-only; build it in the image.
   - type: script
@@ -86,6 +90,7 @@ modules:
         cargo build --release --locked
         install -Dm755 target/release/tuigreet /usr/local/bin/tuigreet
         /usr/local/bin/tuigreet --version
+        ln -sf /usr/local/bin/tuigreet /usr/bin/tuigreet
         dnf remove -y cargo rust gcc gcc-c++ || true
         dnf clean all || true
         rm -rf /root/.cargo /tmp/tuigreet /tmp/tuigreet.tar.gz
