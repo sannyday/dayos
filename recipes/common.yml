@@ -319,13 +319,12 @@ modules:
         - mariadb-server
 
   # glibc requires a langpack provider. Swap the all-locales package
-  # for en/ru in one transaction so the dependency is never broken.
+  # for en_US in one transaction so the dependency is never broken.
   - type: script
     snippets:
       - |
         set -euxo pipefail
         dnf5 -y swap glibc-all-langpacks glibc-langpack-en
-        dnf5 -y install glibc-langpack-ru
 
   # Remove MangoHud and vkBasalt.
   - type: dnf
