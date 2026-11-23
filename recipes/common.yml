@@ -77,12 +77,25 @@ modules:
     snippets:
       - |
         set -euxo pipefail
-        curl -fLsS --retry 5 \
-          https://github.com/tuigreet/tuigreet/releases/download/0.11.0/tuigreet-0.11.0-x86_64 \
-          -o /usr/local/bin/tuigreet
+        urls=(
+          https://github.com/tuigreet/tuigreet/releases/download/0.11.0/tuigreet-0.11.0-x86_64
+          https://github.com/apognu/tuigreet/releases/download/0.11.0/tuigreet-0.11.0-x86_64
+          https://github.com/tuigreet/tuigreet/releases/latest/download/tuigreet-0.11.0-x86_64
+        )
+        ok=0
+        for url in "${urls[@]}"; do
+          echo "trying $url"
+          if curl -fLsS --retry 2 "$url" -o /usr/local/bin/tuigreet; then
+            ok=1
+            break
+          fi
+        done
+        if [ "$ok" -ne 1 ]; then
+          echo "could not download tuigreet 0.11" >&2
+          exit 1
+        fi
         chmod 755 /usr/local/bin/tuigreet
         /usr/local/bin/tuigreet --version
-
   # Nix package manager
   - type: dnf
     install:
