@@ -81,18 +81,7 @@ modules:
         - aquacash5/nerd-fonts
     install:
       packages:
-        - 0x-proto-nerd-fonts
-        - droid-sans-mono-nerd-fonts
-        - fira-code-nerd-fonts
-        - fira-mono-nerd-fonts
-        - jet-brains-mono-nerd-fonts
-        - nerd-fonts-symbols-only
-        - terminus-nerd-fonts
-        - ubuntu-mono-nerd-fonts
-        - ubuntu-nerd-fonts
-        - ubuntu-sans-nerd-fonts
-        - victor-mono-nerd-fonts
-        - zed-mono-nerd-fonts
+        - monaspace-nerd-fonts
 
   # Skip RPM scriptlets for the KDE/Lutris removal transaction. This
   # drop-in is removed by systemd-tmpfiles on first boot, so dnf is
@@ -302,6 +291,32 @@ modules:
         - kf6-syntax-highlighting
         - kpipewire
         - kwayland
+
+  # Remove large optional packages.
+  - type: dnf
+    remove:
+      auto-remove: true
+      packages:
+        - qt6-qtwebengine
+        - glibc-all-langpacks
+        - gcc
+        - gcc-c++
+        - clang22-libs
+        - llvm22-libs
+        - ibus
+        - scx-scheds
+        - google-noto-sans-cjk-fonts
+        - python3-botocore
+        - cldr-emoji-annotation
+        - kernel-devel
+        - mariadb-server
+
+  # Install only the required locales after removing all-langpacks.
+  - type: dnf
+    install:
+      packages:
+        - glibc-langpack-en
+        - glibc-langpack-ru
 
   # Remove MangoHud and vkBasalt.
   - type: dnf
