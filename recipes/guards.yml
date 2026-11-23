@@ -11,6 +11,9 @@ modules:
         test -x /usr/bin/tuigreet
 
         # Differentiate by the base image marker, not by the stack being checked.
+        # The main image is bazzite-nvidia; the VM is plain bazzite.
         if grep -qiE 'bazzite-nvidia|nvidia' \
           /etc/os-release /usr/lib/os-release /usr/share/ublue-os/image-info.json 2>/dev/null; then
+          rpm -q nvidia-driver nvidia-driver-libs nvidia-kmod-common
+          test -e /usr/lib64/libEGL_nvidia.so.0
         fi
