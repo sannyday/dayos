@@ -21,11 +21,8 @@ modules:
         scope: system
         install:
           - com.brave.Browser
-          - com.discordapp.Discord
           - com.github.PintaProject.Pinta
-          - com.github.qarmin.czkawka
           - com.google.Chrome
-          - com.nuclearplayer.Nuclear
           - com.ranfdev.DistroShelf
           - com.vivaldi.Vivaldi
           - com.vscodium.codium
@@ -33,11 +30,9 @@ modules:
           - io.github.flattool.Warehouse
           - io.github.shiftey.Desktop
           - io.gitlab.librewolf-community
-          - io.mpv.Mpv
           - md.obsidian.Obsidian
           - me.kozec.syncthingtk
           - net.ankiweb.Anki
-          - net.mullvad.MullvadBrowser
           - org.cryptomator.Cryptomator
           - org.getmonero.Monero
           - org.gnome.meld
@@ -48,12 +43,9 @@ modules:
           - org.kde.okular
           - org.keepassxc.KeePassXC
           - org.libreoffice.LibreOffice
-          - org.mozilla.firefox
           - org.torproject.torbrowser-launcher
           - org.videolan.VLC
-          - org.wireshark.Wireshark
           - ru.yandex.Browser
-          - us.zoom.Zoom
 
 
   # Installs the cosign policy files so signed image updates verify correctly.
