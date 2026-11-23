@@ -298,7 +298,6 @@ modules:
       auto-remove: true
       packages:
         - qt6-qtwebengine
-        - glibc-all-langpacks
         - gcc
         - gcc-c++
         - clang22-libs
@@ -311,12 +310,14 @@ modules:
         - kernel-devel
         - mariadb-server
 
-  # Install only the required locales after removing all-langpacks.
-  - type: dnf
-    install:
-      packages:
-        - glibc-langpack-en
-        - glibc-langpack-ru
+  # glibc requires a langpack provider. Swap the all-locales package
+  # for en/ru in one transaction so the dependency is never broken.
+  - type: script
+    snippets:
+      - |
+        set -euxo pipefail
+        dnf5 -y swap glibc-all-langpacks glibc-langpack-en
+        dnf5 -y install glibc-langpack-ru
 
   # Remove MangoHud and vkBasalt.
   - type: dnf
