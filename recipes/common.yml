@@ -298,6 +298,15 @@ modules:
       auto-remove: true
       packages:
         - qt6-qtwebengine
+        - tailscale
+        - "*.i686"
+        - webkitgtk6.0
+        - webkit2gtk4.1
+        - javascriptcoregtk6.0
+        - javascriptcoregtk4.1
+        - google-noto-serif-cjk-vf-fonts
+        - google-noto-sans-cjk-vf-fonts
+        - google-noto-sans-mono-cjk-vf-fonts
         - gcc
         - gcc-c++
         - clang22-libs
