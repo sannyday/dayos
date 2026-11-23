@@ -51,11 +51,3 @@ modules:
   # Installs the cosign policy files so signed image updates verify correctly.
   - type: signing
 
-  # Remove main-image-only optional packages.
-  - type: dnf
-    remove:
-      auto-remove: true
-      packages:
-        - nvidia-driver-cuda-libs
-        - nvidia-driver-cuda
-        - cosign

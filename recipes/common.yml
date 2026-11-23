@@ -299,7 +299,6 @@ modules:
       packages:
         - qt6-qtwebengine
         - tailscale
-        - "*.i686"
         - webkitgtk6.0
         - webkit2gtk4.1
         - javascriptcoregtk6.0
