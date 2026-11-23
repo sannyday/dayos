@@ -88,9 +88,9 @@ modules:
         tar -xzf /tmp/tuigreet.tar.gz -C /tmp
         cd /tmp/tuigreet-0.11.0
         cargo build --release --locked
-        install -Dm755 target/release/tuigreet /usr/local/bin/tuigreet
-        /usr/local/bin/tuigreet --version
-        ln -sf /usr/local/bin/tuigreet /usr/bin/tuigreet
+        rm -f /usr/bin/tuigreet
+        install -Dm755 target/release/tuigreet /usr/bin/tuigreet
+        /usr/bin/tuigreet --version
         dnf remove -y cargo rust gcc gcc-c++ || true
         dnf clean all || true
         rm -rf /root/.cargo /tmp/tuigreet /tmp/tuigreet.tar.gz
