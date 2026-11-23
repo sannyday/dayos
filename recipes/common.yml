@@ -45,6 +45,13 @@ modules:
         - uwsm
         - xdg-desktop-portal-hyprland
 
+  # Only the UWSM-managed Hyprland session is used.
+  - type: script
+    snippets:
+      - |
+        set -euxo pipefail
+        rm -f /usr/share/wayland-sessions/hyprland.desktop
+
   # Lightweight Wayland compositor.
   - type: dnf
     install:
@@ -58,13 +65,23 @@ modules:
       packages:
         - greetd
         - greetd-selinux
-        - tuigreet
 
   # Overwrite the package's greeter config after greetd is installed.
   - type: files
     files:
       - source: greetd
         destination: /
+
+  # tuigreet 0.11 for the theme, matrix background and action keybindings.
+  - type: script
+    snippets:
+      - |
+        set -euxo pipefail
+        curl -fLsS --retry 5 \
+          https://github.com/tuigreet/tuigreet/releases/download/0.11.0/tuigreet-0.11.0-x86_64 \
+          -o /usr/local/bin/tuigreet
+        chmod 755 /usr/local/bin/tuigreet
+        /usr/local/bin/tuigreet --version
 
   # Nix package manager
   - type: dnf
