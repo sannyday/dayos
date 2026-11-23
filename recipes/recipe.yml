@@ -51,3 +51,28 @@ modules:
   # Installs the cosign policy files so signed image updates verify correctly.
   - type: signing
 
+
+  # Remove optional NVIDIA userspace pieces without dependency cascade.
+  # The guard below fails the build if the driver stack or EGL is removed.
+  - type: dnf
+    remove:
+      auto-remove: false
+      packages:
+        - nvidia-driver-cuda-libs.i686
+        - libnvidia-fbc.i686
+        - libnvidia-fbc.x86_64
+        - nvidia-driver-cuda
+        - nvidia-settings
+        - waydroid-nvidia
+        - waydroid-nvidia-selinux
+        - nvidia-container-toolkit
+        - nvidia-container-toolkit-base
+        - libnvidia-container1
+        - libnvidia-container-tools
+
+  - type: script
+    snippets:
+      - |
+        set -euxo pipefail
+        rpm -q nvidia-driver nvidia-driver-libs nvidia-kmod-common
+        test -e /usr/lib64/libEGL_nvidia.so.0
