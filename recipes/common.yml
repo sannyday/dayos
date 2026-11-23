@@ -72,30 +72,23 @@ modules:
       - source: greetd
         destination: /
 
-  # tuigreet 0.11 for the theme, matrix background and action keybindings.
+  # tuigreet 0.11 is source-only; build it in the image.
   - type: script
     snippets:
       - |
         set -euxo pipefail
-        urls=(
-          https://github.com/tuigreet/tuigreet/releases/download/0.11.0/tuigreet-0.11.0-x86_64
-          https://github.com/apognu/tuigreet/releases/download/0.11.0/tuigreet-0.11.0-x86_64
-          https://github.com/tuigreet/tuigreet/releases/latest/download/tuigreet-0.11.0-x86_64
-        )
-        ok=0
-        for url in "${urls[@]}"; do
-          echo "trying $url"
-          if curl -fLsS --retry 2 "$url" -o /usr/local/bin/tuigreet; then
-            ok=1
-            break
-          fi
-        done
-        if [ "$ok" -ne 1 ]; then
-          echo "could not download tuigreet 0.11" >&2
-          exit 1
-        fi
-        chmod 755 /usr/local/bin/tuigreet
+        dnf install -y cargo rust gcc gcc-c++
+        curl -fLsS --retry 5 \
+          https://github.com/tuigreet/tuigreet/archive/refs/tags/0.11.0.tar.gz \
+          -o /tmp/tuigreet.tar.gz
+        tar -xzf /tmp/tuigreet.tar.gz -C /tmp
+        cd /tmp/tuigreet-0.11.0
+        cargo build --release --locked
+        install -Dm755 target/release/tuigreet /usr/local/bin/tuigreet
         /usr/local/bin/tuigreet --version
+        dnf remove -y cargo rust gcc gcc-c++ || true
+        dnf clean all || true
+        rm -rf /root/.cargo /tmp/tuigreet /tmp/tuigreet.tar.gz
   # Nix package manager
   - type: dnf
     install:
