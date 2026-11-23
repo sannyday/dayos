@@ -10,10 +10,7 @@ modules:
         # Custom binaries must live under /usr in atomic/bootc.
         test -x /usr/bin/tuigreet
 
-        # The non-NVIDIA VM base has no NVIDIA stack and skips this.
-        if rpm -q nvidia-driver >/dev/null 2>&1 \
-          || rpm -q nvidia-driver-libs >/dev/null 2>&1 \
-          || [ -e /usr/lib64/libEGL_nvidia.so.0 ]; then
-          rpm -q nvidia-driver nvidia-driver-libs nvidia-kmod-common
-          test -e /usr/lib64/libEGL_nvidia.so.0
+        # Differentiate by the base image marker, not by the stack being checked.
+        if grep -qiE 'bazzite-nvidia|nvidia' \
+          /etc/os-release /usr/lib/os-release /usr/share/ublue-os/image-info.json 2>/dev/null; then
         fi
