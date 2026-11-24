@@ -11,9 +11,9 @@ modules:
 
   - type: files
     files:
-      - source: common/04-greetd
+      - source: 04-greetd
         destination: /
-      - source: common/04-greetd
+      - source: 04-greetd
         destination: /
 
   # tuigreet 0.11.1 is source-only; build it in the image.
@@ -44,16 +44,16 @@ modules:
 
   - type: files
     files:
-      - source: common/05-sessions
+      - source: 05-sessions
         destination: /
-      - source: common/05-sessions
+      - source: 05-sessions
         destination: /
 
   - type: files
     files:
-      - source: common/08-theming
+      - source: 08-theming
         destination: /
-      - source: common/08-theming
+      - source: 08-theming
         destination: /
 
   - type: systemd

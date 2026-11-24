@@ -17,9 +17,9 @@ modules:
 
   - type: files
     files:
-      - source: virtual/06-vm
+      - source: 06-vm
         destination: /
-      - source: virtual/06-vm
+      - source: 06-vm
         destination: /
 
   # Enable the VM test-user service after its unit is copied.

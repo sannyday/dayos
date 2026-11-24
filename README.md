@@ -26,7 +26,7 @@ modules live in [`recipes/common.yml`](recipes/common.yml).
   than baked into the image
 - Desktop tools: Ghostty, Fuzzel, cliphist, Noctalia, GParted, VeraCrypt,
   ecryptfs, proxychains-ng, and the `lgl-vm-curator` helper
-- **System configuration** from [`files/common/00-init/`](files/common/00-init):
+- **System configuration** from [`files/00-init/`](files/00-init):
   GRUB menu timeout, `rpm-ostreed` staging of automatic updates,
   podman socket, and relocation of Flatpak data to `/var/home/flatpak`
 - **systemd units** from [`files/systemd/system/`](files/systemd/system) for the
@@ -114,7 +114,7 @@ just qcow2-vm    # convert it to output-vm/*.qcow2
 ```
 
 The VM recipe creates a `test` / `test` account in the `wheel` group on first
-boot, managed by `files/virtual/06-vm`. Change the password with `passwd` after logging
+boot, managed by `files/06-vm`. Change the password with `passwd` after logging
 in.
 
 The anaconda-iso path is not supported with the official CentOS-based BIB for
@@ -139,14 +139,14 @@ recipes/virtual.yml     # non-NVIDIA VM test variant
 recipes/common.yml      # shared modules imported by both recipes
 recipes/greet.yml       # greetd/tuigreet, session menu
 recipes/guards.yml      # main-only build guards
-files/common/00-init/       # shared base config
-files/common/02-noscripts/  # shared DNF noscripts drop-in
-files/common/04-greetd/     # shared greetd config
-files/common/05-sessions/   # shared hyprland/terminal entries
-files/common/08-theming/    # shared tuigreet theme/matrix
-files/main/06-autologin/    # main-only autologin
-files/virtual/06-vm/        # virtual-only test account
-files/systemd/              # systemd module units, untouched
+files/00-init/       # shared base config
+files/02-noscripts/  # shared DNF noscripts drop-in
+files/04-greetd/     # shared greetd config
+files/05-sessions/   # shared hyprland/terminal entries
+files/08-theming/    # shared tuigreet theme/matrix
+files/06-autologin/  # main-only autologin
+files/06-vm/         # virtual-only test account
+files/systemd/       # systemd module units, untouched
 disk_config/              # bootc-image-builder configurations
 .github/workflows/        # image build (BlueBuild) + disk image build
 cosign.pub                # public key for image verification
@@ -164,18 +164,18 @@ cosign.pub                # public key for image verification
   Flatpaks are not touched.
 - The removal list was audited against a snapshot of the packages installed on
   the running DayOS system; it is not used by the build.
-- Put shared configuration under `files/common/<stage>/` and variant-only
-  files under `files/main/` or `files/virtual/` (for example
-  `files/common/00-init/etc/default/grub`). `files/systemd/` is untouched.
+- Put shared configuration under `files/<stage>/` and variant-only files under
+  `files/06-autologin/` or `files/06-vm/` (for example
+  `files/00-init/etc/default/grub`). `files/systemd/` is untouched.
 - Put systemd units under `files/systemd/system/`; the `systemd` module copies
   them to `/usr/lib/systemd/system` and enables them.
-- `files/common/00-init/etc/fstab.tower` and `files/common/00-init/etc/crypttab.tower` are
+- `files/00-init/etc/fstab.tower` and `files/00-init/etc/crypttab.tower` are
   reference copies for the `tower` machine and are **not** applied because of
   the `.tower` suffix. Rename them if you want them to take effect.
-- `files/common/00-init/etc/nix/nix.conf` keeps `trusted-users = day`; at boot
+- `files/00-init/etc/nix/nix.conf` keeps `trusted-users = day`; at boot
   `dayos-user-config.service` replaces it with the UID 1000 account name. If
   your account uses a different UID, adjust it in
-  [`apply-user-config.sh`](files/common/00-init/usr/libexec/dayos/apply-user-config.sh).
+  [`apply-user-config.sh`](files/00-init/usr/libexec/dayos/apply-user-config.sh).
 - The image uses **greetd** with **tuigreet 0.11.1**. Sessions are read from
   `/usr/share/wayland-sessions` (`hyprland`, `labwc`, `terminal`). The main
   image autologins into `uwsm start -e -D Hyprland start-hyprland` as `day`;
@@ -183,7 +183,7 @@ cosign.pub                # public key for image verification
 - `recipes/guards.yml` is main-only and checks `/usr/bin/tuigreet`,
   `/usr/bin/uwsm`, `/usr/bin/Hyprland`, `/usr/bin/start-hyprland`, and the
   NVIDIA stack. `recipes/virtual.yml` has no guards.
-- Session entries are `files/common/05-sessions/.../hyprland.desktop` (`Name=hyprland`,
+- Session entries are `files/05-sessions/.../hyprland.desktop` (`Name=hyprland`,
   `Exec=/usr/bin/uwsm start -e -D Hyprland start-hyprland`) and
   `terminal.desktop` (`Name=terminal`).
 

@@ -3,9 +3,9 @@
 modules:
   - type: files
     files:
-      - source: common/00-init
+      - source: 00-init
         destination: /
-      - source: common/00-init
+      - source: 00-init
         destination: /
 
   # Base system packages
@@ -70,9 +70,9 @@ modules:
 
   - type: files
     files:
-      - source: common/02-noscripts
+      - source: 02-noscripts
         destination: /
-      - source: common/02-noscripts
+      - source: 02-noscripts
         destination: /
 
   # Remove KDE applications and Plasma first, while KF6 libraries remain

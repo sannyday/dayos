@@ -16,9 +16,9 @@ modules:
 
   - type: files
     files:
-      - source: main/06-autologin
+      - source: 06-autologin
         destination: /
-      - source: main/06-autologin
+      - source: 06-autologin
         destination: /
 
   # Flatpaks are installed from Flathub by a systemd timer after boot, so they
