@@ -18,7 +18,7 @@ modules live in [`recipes/common.yml`](recipes/common.yml).
 - **KDE Plasma and Lutris removed** from the Bazzite base to reduce image
   size; Flatpaks are left untouched
 - **greetd + tuigreet 0.11.1**, a lightweight login manager with Rose Pine
-  theme, matrix background, `Alt+C/S/P/B` menus, and `ter-v32n` console font
+  theme, matrix background, and `Alt+C/S/P/B` menus
 - **Nix** with the daemon enabled and `/nix` bind-mounted from `/var/home/nix`;
   Nix trust is aligned with the UID 1000 account at boot
 - **Nerd Fonts** from the `aquacash5/nerd-fonts` COPR
@@ -137,12 +137,13 @@ from the locally built VM image.
 recipes/main.yml        # main NVIDIA image definition
 recipes/virtual.yml     # non-NVIDIA VM test variant
 recipes/common.yml      # shared modules imported by both recipes
-recipes/greet.yml       # greetd/tuigreet, session menu, console font
+recipes/greet.yml       # greetd/tuigreet, session menu
 recipes/guards.yml      # main-only build guards
 files/system/            # copied into the image root (/), e.g. /etc, /usr
 files/greetd/            # greetd/tuigreet configs
+files/greetd-autologin/  # main-only autologin config
+files/noscripts/         # DNF noscripts drop-in
 files/sessions/          # hyprland/terminal session entries
-files/console/           # /etc/vconsole.conf console font
 files/vm/                # VM-only files (test account and setup service)
 files/systemd/system/     # systemd units -> /usr/lib/systemd/system
 disk_config/              # bootc-image-builder configurations
@@ -176,9 +177,8 @@ cosign.pub                # public key for image verification
 - The image uses **greetd** with **tuigreet 0.11.1**. Sessions are read from
   `/usr/share/wayland-sessions` (`hyprland`, `labwc`, `terminal`). The main
   image autologins into `uwsm start -e -D Hyprland start-hyprland` as `day`;
-  the VM shows the greeter. The console font comes from `FONT=ter-v32n` in
-  `/etc/vconsole.conf`; tuigreet has no font option of its own.
-- `recipes/guards.yml` is main-only and checks `/usr/bin/tuigreet` (0.11.1),
+  the VM shows the greeter.
+- `recipes/guards.yml` is main-only and checks `/usr/bin/tuigreet`,
   `/usr/bin/uwsm`, `/usr/bin/Hyprland`, `/usr/bin/start-hyprland`, and the
   NVIDIA stack. `recipes/virtual.yml` has no guards.
 - Session entries are `files/sessions/.../hyprland.desktop` (`Name=hyprland`,

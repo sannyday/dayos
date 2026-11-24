@@ -50,14 +50,6 @@ modules:
       - source: sessions
         destination: /
 
-  # Console font used by tuigreet on the VT.
-  - type: files
-    files:
-      - source: console
-        destination: /
-      - source: console
-        destination: /
-
   - type: systemd
     system:
       enabled:
