@@ -9,7 +9,7 @@ username = true
 
 [secret]
 mode = "characters"
-characters = "❧"
+characters = "◆"
 
 [keybindings]
 command = 2
@@ -52,9 +52,9 @@ fps = 30
 [background.matrix]
 head_color = "#e0def4"
 bright_color = "#9ccfd8"
-dim_color = "#31748f"
+dim_color = "#EA9A97"
 min_length = 6
 max_length = 18
-min_speed = 0.30
-max_speed = 1.10
+min_speed = 0.15
+max_speed = 0.55
 mutate_chance = 0.02

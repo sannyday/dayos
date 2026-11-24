@@ -8,7 +8,7 @@ DayOS is a personal, custom [Bazzite](https://bazzite.gg) image built with
 and layers Hyprland, labwc, the Nix package manager, Nerd Fonts, and a handful
 of machine-specific system tweaks on top.
 
-The build is defined in [`recipes/recipe.yml`](recipes/recipe.yml); shared
+The build is defined in [`recipes/main.yml`](recipes/main.yml); shared
 modules live in [`recipes/common.yml`](recipes/common.yml).
 
 ## What's included
@@ -17,8 +17,8 @@ modules live in [`recipes/common.yml`](recipes/common.yml).
 - **labwc**, a lightweight wlroots-based Wayland compositor
 - **KDE Plasma and Lutris removed** from the Bazzite base to reduce image
   size; Flatpaks are left untouched
-- **greetd + tuigreet**, a lightweight login manager instead of KDE Plasma
-  Login/SDDM
+- **greetd + tuigreet 0.11.1**, a lightweight login manager with Rose Pine
+  theme, matrix background, `Alt+C/S/P/B` menus, and `ter-v32n` console font
 - **Nix** with the daemon enabled and `/nix` bind-mounted from `/var/home/nix`;
   Nix trust is aligned with the UID 1000 account at boot
 - **Nerd Fonts** from the `aquacash5/nerd-fonts` COPR
@@ -36,7 +36,7 @@ modules live in [`recipes/common.yml`](recipes/common.yml).
 ## Flatpaks
 
 The Flatpaks in the `default-flatpaks` module of
-[`recipes/recipe.yml`](recipes/recipe.yml) are **not baked into the image**.
+[`recipes/main.yml`](recipes/main.yml) are **not baked into the image**.
 A systemd timer (`system-flatpak-setup.timer`) runs about 30 seconds after
 boot and installs anything missing from Flathub, similar to Bazzite's default
 apps.
@@ -85,7 +85,7 @@ Install the [BlueBuild CLI](https://github.com/blue-build/cli#installation),
 then build the recipe with podman:
 
 ```bash
-bluebuild build --skip-validation recipes/recipe.yml
+bluebuild build --skip-validation recipes/main.yml
 ```
 
 Useful helpers are also available through `just`:
@@ -100,7 +100,7 @@ just iso         # build an installer ISO from the published image
 To inspect what BlueBuild generates without building:
 
 ```bash
-bluebuild generate --skip-validation recipes/recipe.yml -o Containerfile
+bluebuild generate --skip-validation recipes/main.yml -o Containerfile
 ```
 
 ## VM test image
@@ -134,12 +134,16 @@ from the locally built VM image.
 ## Repository layout
 
 ```text
-recipes/recipe.yml        # main NVIDIA image definition
-recipes/recipe-vm.yml     # non-NVIDIA VM test variant
-recipes/common.yml        # shared modules imported by both recipes
-files/system/             # copied into the image root (/), e.g. /etc, /usr
-files/greetd/             # greetd/tuigreet login configuration
-files/vm/                 # VM-only files (test account and setup service)
+recipes/main.yml        # main NVIDIA image definition
+recipes/virtual.yml     # non-NVIDIA VM test variant
+recipes/common.yml      # shared modules imported by both recipes
+recipes/greet.yml       # greetd/tuigreet, session menu, console font
+recipes/guards.yml      # main-only build guards
+files/system/            # copied into the image root (/), e.g. /etc, /usr
+files/greetd/            # greetd/tuigreet configs
+files/sessions/          # hyprland/terminal session entries
+files/console/           # /etc/vconsole.conf console font
+files/vm/                # VM-only files (test account and setup service)
 files/systemd/system/     # systemd units -> /usr/lib/systemd/system
 disk_config/              # bootc-image-builder configurations
 .github/workflows/        # image build (BlueBuild) + disk image build
@@ -169,8 +173,17 @@ cosign.pub                # public key for image verification
   `dayos-user-config.service` replaces it with the UID 1000 account name. If
   your account uses a different UID, adjust it in
   [`apply-user-config.sh`](files/system/usr/libexec/dayos/apply-user-config.sh).
-- The image uses **greetd** with **tuigreet** as the login manager. Sessions are
-  read from `/usr/share/wayland-sessions` (Hyprland and labwc).
+- The image uses **greetd** with **tuigreet 0.11.1**. Sessions are read from
+  `/usr/share/wayland-sessions` (`hyprland`, `labwc`, `terminal`). The main
+  image autologins into `uwsm start -e -D Hyprland start-hyprland` as `day`;
+  the VM shows the greeter. The console font comes from `FONT=ter-v32n` in
+  `/etc/vconsole.conf`; tuigreet has no font option of its own.
+- `recipes/guards.yml` is main-only and checks `/usr/bin/tuigreet` (0.11.1),
+  `/usr/bin/uwsm`, `/usr/bin/Hyprland`, `/usr/bin/start-hyprland`, and the
+  NVIDIA stack. `recipes/virtual.yml` has no guards.
+- Session entries are `files/sessions/.../hyprland.desktop` (`Name=hyprland`,
+  `Exec=/usr/bin/uwsm start -e -D Hyprland start-hyprland`) and
+  `terminal.desktop` (`Name=terminal`).
 
 ## License
 

@@ -13,6 +13,8 @@ image-version: stable
 modules:
   - from-file: common.yml
 
+  - from-file: greet.yml
+
   # VM-only test account files.
   - type: files
     files:
@@ -24,5 +26,3 @@ modules:
     system:
       enabled:
         - dayos-vm-user.service
-
-  - from-file: guards.yml

@@ -12,6 +12,8 @@ image-version: stable
 modules:
   - from-file: common.yml
 
+  - from-file: greet.yml
+
   # Autologin into Hyprland/UWSM on the main image.
   - type: files
     files:
@@ -61,7 +63,7 @@ modules:
 
 
   # Remove optional NVIDIA userspace pieces without dependency cascade.
-  # The guard below fails the build if the driver stack or EGL is removed.
+  # guards.yml fails the build if the driver stack or EGL is removed.
   - type: dnf
     remove:
       auto-remove: false

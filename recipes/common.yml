@@ -47,13 +47,6 @@ modules:
         - uwsm
         - xdg-desktop-portal-hyprland
 
-  # Only the UWSM-managed Hyprland session is used.
-  - type: script
-    snippets:
-      - |
-        set -euxo pipefail
-        rm -f /usr/share/wayland-sessions/hyprland.desktop
-
   # Lightweight Wayland compositor.
   - type: dnf
     install:
@@ -61,39 +54,6 @@ modules:
         - labwc
         - labwc-session
 
-  # Lightweight Wayland greeter (replaces KDE Plasma Login/SDDM).
-  - type: dnf
-    install:
-      packages:
-        - greetd
-        - greetd-selinux
-
-  # Overwrite the package's greeter config after greetd is installed.
-  - type: files
-    files:
-      - source: greetd
-        destination: /
-      - source: greetd
-        destination: /
-
-  # tuigreet 0.11 is source-only; build it in the image.
-  - type: script
-    snippets:
-      - |
-        set -euxo pipefail
-        dnf install -y cargo rust gcc gcc-c++
-        curl -fLsS --retry 5 \
-          https://github.com/tuigreet/tuigreet/archive/refs/tags/0.11.0.tar.gz \
-          -o /tmp/tuigreet.tar.gz
-        tar -xzf /tmp/tuigreet.tar.gz -C /tmp
-        cd /tmp/tuigreet-0.11.0
-        cargo build --release --locked
-        rm -f /usr/bin/tuigreet
-        install -Dm755 target/release/tuigreet /usr/bin/tuigreet
-        /usr/bin/tuigreet --version
-        dnf remove -y cargo rust gcc gcc-c++ || true
-        dnf clean all || true
-        rm -rf /root/.cargo /tmp/tuigreet /tmp/tuigreet.tar.gz
   # Nix package manager
   - type: dnf
     install:
@@ -372,7 +332,6 @@ modules:
         - nix-group.service
         - nix-daemon.service
         - dayos-user-config.service
-        - greetd.service
         - rpm-ostreed-automatic.timer
         - podman.socket
         - flatpak-relocate.service

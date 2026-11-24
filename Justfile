@@ -1,6 +1,6 @@
 # BlueBuild helpers for DayOS. All commands run from the repository root.
-export recipe := env("RECIPE", "recipes/recipe.yml")
-export vm_recipe := env("VM_RECIPE", "recipes/recipe-vm.yml")
+export recipe := env("RECIPE", "recipes/main.yml")
+export vm_recipe := env("VM_RECIPE", "recipes/virtual.yml")
 export image_name := env("IMAGE_NAME", "dayos")
 export image_registry := env("IMAGE_REGISTRY", "ghcr.io/sannyday")
 export bib_image := env("BIB_IMAGE", "quay.io/centos-bootc/bootc-image-builder:latest")

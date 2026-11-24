@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=Terminal
+Name=terminal
 Comment=Linux console
 Exec=/usr/bin/bash --login
 Type=Application
-DesktopNames=Terminal
+DesktopNames=terminal

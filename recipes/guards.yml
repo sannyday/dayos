@@ -1,19 +1,15 @@
 ---
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
-# Build guards. Included at the end of both recipes.
+# Main-image build guards.
 modules:
   - type: script
     snippets:
       - |
         set -euxo pipefail
-
-        # Custom binaries must live under /usr in atomic/bootc.
         test -x /usr/bin/tuigreet
-
-        # Differentiate by the base image marker, not by the stack being checked.
-        # The main image is bazzite-nvidia; the VM is plain bazzite.
-        if grep -qiE 'bazzite-nvidia|nvidia' \
-          /etc/os-release /usr/lib/os-release /usr/share/ublue-os/image-info.json 2>/dev/null; then
-          rpm -q nvidia-driver nvidia-driver-libs nvidia-kmod-common
-          test -e /usr/lib64/libEGL_nvidia.so.0
-        fi
+        /usr/bin/tuigreet --version | grep -q '0.11.1'
+        test -x /usr/bin/uwsm
+        test -x /usr/bin/Hyprland
+        test -x /usr/bin/start-hyprland
+        rpm -q nvidia-driver nvidia-driver-libs nvidia-kmod-common
+        test -e /usr/lib64/libEGL_nvidia.so.0

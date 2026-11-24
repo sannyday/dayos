@@ -2,7 +2,7 @@
 vt = 1
 
 [initial_session]
-command = "/usr/bin/uwsm start hyprland-uwsm.desktop"
+command = "/usr/bin/uwsm start -e -D Hyprland start-hyprland"
 user = "day"
 
 [default_session]
