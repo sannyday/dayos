@@ -1,6 +1,0 @@
-[Desktop Entry]
-Name=terminal
-Comment=Linux console
-Exec=/usr/bin/bash --login
-Type=Application
-DesktopNames=terminal

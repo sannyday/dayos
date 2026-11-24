@@ -11,50 +11,15 @@ base-image: ghcr.io/ublue-os/bazzite
 image-version: stable
 
 modules:
-  - type: files
-    files:
-      - source: virtual/00-init
-        destination: /
-      - source: virtual/00-init
-        destination: /
-
-  - type: files
-    files:
-      - source: virtual/02-noscripts
-        destination: /
-      - source: virtual/02-noscripts
-        destination: /
-
   - from-file: common.yml
 
   - from-file: greet.yml
 
   - type: files
     files:
-      - source: virtual/04-greetd
-        destination: /
-      - source: virtual/04-greetd
-        destination: /
-
-  - type: files
-    files:
-      - source: virtual/05-sessions
-        destination: /
-      - source: virtual/05-sessions
-        destination: /
-
-  - type: files
-    files:
       - source: virtual/06-vm
         destination: /
       - source: virtual/06-vm
-        destination: /
-
-  - type: files
-    files:
-      - source: virtual/08-theming
-        destination: /
-      - source: virtual/08-theming
         destination: /
 
   # Enable the VM test-user service after its unit is copied.

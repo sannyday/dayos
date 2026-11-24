@@ -9,6 +9,13 @@ modules:
         - greetd
         - greetd-selinux
 
+  - type: files
+    files:
+      - source: common/04-greetd
+        destination: /
+      - source: common/04-greetd
+        destination: /
+
   # tuigreet 0.11.1 is source-only; build it in the image.
   - type: script
     snippets:
@@ -34,6 +41,20 @@ modules:
       - |
         set -euxo pipefail
         rm -f /usr/share/wayland-sessions/hyprland.desktop
+
+  - type: files
+    files:
+      - source: common/05-sessions
+        destination: /
+      - source: common/05-sessions
+        destination: /
+
+  - type: files
+    files:
+      - source: common/08-theming
+        destination: /
+      - source: common/08-theming
+        destination: /
 
   - type: systemd
     system:

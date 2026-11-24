@@ -1,6 +1,13 @@
 ---
 # yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
 modules:
+  - type: files
+    files:
+      - source: common/00-init
+        destination: /
+      - source: common/00-init
+        destination: /
+
   # Base system packages
   - type: dnf
     repos:
@@ -60,6 +67,13 @@ modules:
     install:
       packages:
         - monaspace-nerd-fonts
+
+  - type: files
+    files:
+      - source: common/02-noscripts
+        destination: /
+      - source: common/02-noscripts
+        destination: /
 
   # Remove KDE applications and Plasma first, while KF6 libraries remain
   # available for their removal scriptlets.
