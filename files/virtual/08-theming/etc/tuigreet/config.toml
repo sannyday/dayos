@@ -1,0 +1,60 @@
+[display]
+show_time = true
+
+[session]
+sessions_dirs = ["/usr/share/wayland-sessions"]
+
+[remember]
+username = true
+
+[secret]
+mode = "characters"
+characters = "◆"
+
+[keybindings]
+command = 2
+sessions = 3
+power = 12
+background = 4
+
+[[keybindings.actions]]
+key = "Alt+c"
+action = "command"
+
+[[keybindings.actions]]
+key = "Alt+s"
+action = "sessions"
+
+[[keybindings.actions]]
+key = "Alt+p"
+action = "power"
+
+[[keybindings.actions]]
+key = "Alt+b"
+action = "background"
+
+[theme]
+border = "#31748f"
+text = "#e0def4"
+time = "#f6c177"
+container = "#191724"
+title = "#c4a7e7"
+greet = "#ebbcba"
+prompt = "#9ccfd8"
+input = "#e0def4"
+action = "#eb6f92"
+button = "#f6c177"
+
+[background]
+kind = "matrix"
+fps = 30
+
+[background.matrix]
+head_color = "#e0def4"
+bright_color = "#9ccfd8"
+dim_color = "#EA9A97"
+min_length = 6
+max_length = 18
+min_speed = 0.15
+max_speed = 0.55
+mutate_chance = 0.02

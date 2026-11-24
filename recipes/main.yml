@@ -10,16 +10,50 @@ image-version: stable
 
 # Modules run in order, top to bottom. Shared modules live in common.yml.
 modules:
+  - type: files
+    files:
+      - source: main/00-init
+        destination: /
+      - source: main/00-init
+        destination: /
+
+  - type: files
+    files:
+      - source: main/02-noscripts
+        destination: /
+      - source: main/02-noscripts
+        destination: /
+
   - from-file: common.yml
 
   - from-file: greet.yml
 
-  # Autologin into Hyprland/UWSM on the main image.
   - type: files
     files:
-      - source: greetd-autologin
+      - source: main/04-greetd
         destination: /
-      - source: greetd-autologin
+      - source: main/04-greetd
+        destination: /
+
+  - type: files
+    files:
+      - source: main/05-sessions
+        destination: /
+      - source: main/05-sessions
+        destination: /
+
+  - type: files
+    files:
+      - source: main/06-autologin
+        destination: /
+      - source: main/06-autologin
+        destination: /
+
+  - type: files
+    files:
+      - source: main/08-theming
+        destination: /
+      - source: main/08-theming
         destination: /
 
   # Flatpaks are installed from Flathub by a systemd timer after boot, so they

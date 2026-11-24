@@ -9,14 +9,6 @@ modules:
         - greetd
         - greetd-selinux
 
-  # Overwrite the package's greeter config after greetd is installed.
-  - type: files
-    files:
-      - source: greetd
-        destination: /
-      - source: greetd
-        destination: /
-
   # tuigreet 0.11.1 is source-only; build it in the image.
   - type: script
     snippets:
@@ -42,13 +34,6 @@ modules:
       - |
         set -euxo pipefail
         rm -f /usr/share/wayland-sessions/hyprland.desktop
-
-  - type: files
-    files:
-      - source: sessions
-        destination: /
-      - source: sessions
-        destination: /
 
   - type: systemd
     system:

@@ -1,16 +1,6 @@
 ---
 # yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
 modules:
-  # Copy files/system/* into the image root (/). This runs before package
-  # installation so that RPM %config(noreplace) files (e.g. /etc/nix/nix.conf)
-  # keep the versions shipped in this repository.
-  - type: files
-    files:
-      - source: system
-        destination: /
-      - source: system
-        destination: /
-
   # Base system packages
   - type: dnf
     repos:
@@ -70,14 +60,6 @@ modules:
     install:
       packages:
         - monaspace-nerd-fonts
-
-  # Skip RPM scriptlets for the KDE/Lutris removal transaction. This
-  # drop-in is removed by systemd-tmpfiles on first boot, so dnf is
-  # not permanently affected.
-  - type: files
-    files:
-      - source: noscripts
-        destination: /
 
   # Remove KDE applications and Plasma first, while KF6 libraries remain
   # available for their removal scriptlets.
